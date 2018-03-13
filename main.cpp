@@ -11,6 +11,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 #include "shader.h"
 
 int main()
@@ -55,7 +56,28 @@ int main()
     GLuint programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
 
 
-    //Triangle
+    unsigned int MatrixID = glGetUniformLocation(programID, "MVP");
+
+    float width = 4.0f;
+    float height = 3.0f;
+
+    //Projection matrix: 45% field of view, 4:3 aspect ratio, display range: 0.1 unit <-> 100 units
+    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 0.1f, 100.0f);
+
+
+    //Camera Matrix
+    glm::mat4 View = glm::lookAt(glm::vec3(4,3,3), //Camera pos is at (4,3,3) in world space
+                                 glm::vec3(0,0,0), //and looks at the origin
+                                 glm::vec3(0,1,0)); //Y is upwards
+
+    //Matrix Model: an identity matrix (model will be at the origin)
+    glm::mat4 Model = glm::mat4(1.0f);
+
+    //Matrix Multiplication
+    glm::mat4 MVP = Projection * View * Model;
+
+
+    //Triangle vertices
     static const GLfloat g_vertex_buffer_data[] =
     {
         -1.0f, -1.0f, 0.0f,
@@ -74,6 +96,9 @@ int main()
         glClear( GL_COLOR_BUFFER_BIT );
 
         glUseProgram(programID);
+
+
+        glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP[0][0]);
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
