@@ -48,6 +48,10 @@ int main()
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
+    glEnable(GL_DEPTH_TEST);
+
+    glDepthFunc(GL_LESS);
+
     //Create a vertex array object and bind it
     unsigned int VertexArrayID;
     glGenVertexArrays(1,&VertexArrayID);
@@ -61,28 +65,89 @@ int main()
     float width = 4.0f;
     float height = 3.0f;
 
+
     //Projection matrix: 45% field of view, 4:3 aspect ratio, display range: 0.1 unit <-> 100 units
-    glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 0.1f, 100.0f);
+    glm::mat4 Projection = glm::perspective(glm::radians(60.0f), (float) width / (float) height, 0.1f, 100.0f);
 
 
     //Camera Matrix
-    glm::mat4 View = glm::lookAt(glm::vec3(4,3,3), //Camera pos is at (4,3,3) in world space
+    glm::mat4 View = glm::lookAt(glm::vec3(1,3,3), //Camera pos is at (4,3,3) in world space
                                  glm::vec3(0,0,0), //and looks at the origin
                                  glm::vec3(0,1,0)); //Y is upwards
 
     //Matrix Model: an identity matrix (model will be at the origin)
-    glm::mat4 Model = glm::mat4(1.0f);
+    glm::mat4 Model = glm::translate(glm::mat4(),glm::vec3(1.0f,0.0f,-1.0f));
+    glm::mat4 TriangleModel = glm::translate(glm::mat4(),glm::vec3(-1.0f,0.0f,-1.0f));
+    //glm::mat4 TriangleModel = glm::mat4(1.0f);
+
 
     //Matrix Multiplication
     glm::mat4 MVP = Projection * View * Model;
+    glm::mat4 MVP2 = Projection * View * TriangleModel;
 
 
-    //Triangle vertices
-    static const GLfloat g_vertex_buffer_data[] =
-    {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
+
+    //Cube Data
+    static const GLfloat g_vertex_buffer_data[] = {
+    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+    -1.0f,-1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f, // triangle 1 : end
+    1.0f, 1.0f,-1.0f, // triangle 2 : begin
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f, // triangle 2 : end
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f
+    };
+
+    static GLfloat g_color_buffer_data[12*3*3];
+
+    for (int v = 0; v < 12*3*3 ; v++){
+        g_color_buffer_data[v+0] = (float)(rand() % 2 )+0.2;
+        g_color_buffer_data[v+1] = (float)(rand() % 2)+0.2;
+        g_color_buffer_data[v+2] = (float)(rand() % 2)+0.2;
+    }
+    //Triangle Data
+    static const GLfloat g_vertex_buffer2_data[] = {
+    -1.0f, -1.0f, 0.0f,
+    1.0f, -1.0f, 0.0f,
+    0.0f,  1.0f, 0.0f,
+    };
+
+    static const GLfloat g_color_buffer2_data[] = {
+    0.583f,  0.771f,  0.014f,
+    0.609f,  0.115f,  0.436f,
+    0.327f,  0.483f,  0.844f,
+    0.140f,  0.616f,  0.489f,
+    0.997f,  0.513f,  0.064f,
+    0.945f,  0.719f,  0.592f
     };
 
     //create a vertex buffer and pass in our data for openGL
@@ -91,9 +156,31 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
 
+
+    //Colour Buffers
+    unsigned int colorBuffer;
+    glGenBuffers(1,&colorBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+
+
+    //create a 2nd vertex buffer and pass in our data for openGL
+    unsigned int vertexBuffer2;
+    glGenBuffers(1,&vertexBuffer2);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer2);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer2_data),g_vertex_buffer2_data, GL_STATIC_DRAW);
+
+
+    //Colour Buffers
+    unsigned int colorBuffer2;
+    glGenBuffers(1,&colorBuffer2);
+    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer2);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer2_data), g_color_buffer2_data, GL_STATIC_DRAW);
+
+
     do
     {
-        glClear( GL_COLOR_BUFFER_BIT );
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(programID);
 
@@ -111,6 +198,50 @@ int main()
         0,                 // array buffer offset
         (void*)0
         );
+
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer);
+        glVertexAttribPointer
+        (
+        1,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
+        3,                 // size
+        GL_FLOAT,          // type
+        GL_FALSE,          // normalized?
+        0,                 // array buffer offset
+        (void*)0
+        );
+
+        glDrawArrays(GL_TRIANGLES,0,12*3);
+
+        glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP2[0][0]);
+
+
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer2);
+        glVertexAttribPointer
+        (
+        2,                 // attribute 0, no real reason for 0, but must match the layout in the shader.
+        3,                 // size
+        GL_FLOAT,          // type
+        GL_FALSE,          // normalized?
+        0,                 // array buffer offset
+        (void*)0
+        );
+
+        glEnableVertexAttribArray(3);
+        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer2);
+        glVertexAttribPointer
+        (
+        3,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
+        3,                 // size
+        GL_FLOAT,          // type
+        GL_FALSE,          // normalized?
+        0,                 // array buffer offset
+        (void*)0
+        );
+
+
+
         glDrawArrays(GL_TRIANGLES,0,3);
         glDisableVertexAttribArray(0);
 
