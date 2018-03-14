@@ -13,6 +13,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include "shader.h"
+#include "texture.h"
 
 int main()
 {
@@ -71,112 +72,142 @@ int main()
 
 
     //Camera Matrix
-    glm::mat4 View = glm::lookAt(glm::vec3(1,3,3), //Camera pos is at (4,3,3) in world space
+    glm::mat4 View = glm::lookAt(glm::vec3(-1.5,0,0), //Camera pos is at (4,3,3) in world space
                                  glm::vec3(0,0,0), //and looks at the origin
                                  glm::vec3(0,1,0)); //Y is upwards
 
     //Matrix Model: an identity matrix (model will be at the origin)
     glm::mat4 Model = glm::translate(glm::mat4(),glm::vec3(1.0f,0.0f,-1.0f));
-    glm::mat4 TriangleModel = glm::translate(glm::mat4(),glm::vec3(-1.0f,0.0f,-1.0f));
+    glm::mat4 Model2 = glm::translate(glm::mat4(),glm::vec3(-2.0f,0.0f,-1.0f));
     //glm::mat4 TriangleModel = glm::mat4(1.0f);
 
 
     //Matrix Multiplication
     glm::mat4 MVP = Projection * View * Model;
-    glm::mat4 MVP2 = Projection * View * TriangleModel;
+    glm::mat4 MVP2 = Projection * View * Model2;
+
+    GLuint Texture = loadDDS("uvtemplate.DDS");
+    GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
 
 
     //Cube Data
     static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
-    -1.0f,-1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f, // triangle 1 : end
-    1.0f, 1.0f,-1.0f, // triangle 2 : begin
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f, // triangle 2 : end
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f
-    };
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f
+	};
 
-    static GLfloat g_color_buffer_data[12*3*3];
+    static const GLfloat g_uv_buffer_data[] = {
+		0.000059f, 1.0f-0.000004f,
+		0.000103f, 1.0f-0.336048f,
+		0.335973f, 1.0f-0.335903f,
+		1.000023f, 1.0f-0.000013f,
+		0.667979f, 1.0f-0.335851f,
+		0.999958f, 1.0f-0.336064f,
+		0.667979f, 1.0f-0.335851f,
+		0.336024f, 1.0f-0.671877f,
+		0.667969f, 1.0f-0.671889f,
+		1.000023f, 1.0f-0.000013f,
+		0.668104f, 1.0f-0.000013f,
+		0.667979f, 1.0f-0.335851f,
+		0.000059f, 1.0f-0.000004f,
+		0.335973f, 1.0f-0.335903f,
+		0.336098f, 1.0f-0.000071f,
+		0.667979f, 1.0f-0.335851f,
+		0.335973f, 1.0f-0.335903f,
+		0.336024f, 1.0f-0.671877f,
+		1.000004f, 1.0f-0.671847f,
+		0.999958f, 1.0f-0.336064f,
+		0.667979f, 1.0f-0.335851f,
+		0.668104f, 1.0f-0.000013f,
+		0.335973f, 1.0f-0.335903f,
+		0.667979f, 1.0f-0.335851f,
+		0.335973f, 1.0f-0.335903f,
+		0.668104f, 1.0f-0.000013f,
+		0.336098f, 1.0f-0.000071f,
+		0.000103f, 1.0f-0.336048f,
+		0.000004f, 1.0f-0.671870f,
+		0.336024f, 1.0f-0.671877f,
+		0.000103f, 1.0f-0.336048f,
+		0.336024f, 1.0f-0.671877f,
+		0.335973f, 1.0f-0.335903f,
+		0.667969f, 1.0f-0.671889f,
+		1.000004f, 1.0f-0.671847f,
+		0.667979f, 1.0f-0.335851f
+	};
 
-    for (int v = 0; v < 12*3*3 ; v++){
-        g_color_buffer_data[v+0] = (float)(rand() % 2 )+0.2;
-        g_color_buffer_data[v+1] = (float)(rand() % 2)+0.2;
-        g_color_buffer_data[v+2] = (float)(rand() % 2)+0.2;
-    }
-    //Triangle Data
-    static const GLfloat g_vertex_buffer2_data[] = {
-    -1.0f, -1.0f, 0.0f,
-    1.0f, -1.0f, 0.0f,
-    0.0f,  1.0f, 0.0f,
-    };
+//    static GLfloat g_color_buffer_data[12*3*3];
+//    static GLfloat g_color_buffer2_data[12*3*3];
 
-    static const GLfloat g_color_buffer2_data[] = {
-    0.583f,  0.771f,  0.014f,
-    0.609f,  0.115f,  0.436f,
-    0.327f,  0.483f,  0.844f,
-    0.140f,  0.616f,  0.489f,
-    0.997f,  0.513f,  0.064f,
-    0.945f,  0.719f,  0.592f
-    };
 
+//    for (int v = 0; v < 12*3*3 ; v++){
+//       g_color_buffer_data[v+0] = (float)(rand() % 2);
+//       g_color_buffer_data[v+1] = (float)(rand() % 2);
+//       g_color_buffer_data[v+2] = (float)(rand() % 2);
+//       g_color_buffer2_data[v+0] = (float)(rand() % 2);
+//       g_color_buffer2_data[v+1] = (float)(rand() % 2);
+//       g_color_buffer2_data[v+2] = (float)(rand() % 2);
+//    }
     //create a vertex buffer and pass in our data for openGL
     unsigned int vertexBuffer;
     glGenBuffers(1,&vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
 
-
-    //Colour Buffers
-    unsigned int colorBuffer;
-    glGenBuffers(1,&colorBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+    GLuint uvBuffer;
+	glGenBuffers(1, &uvBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
 
-    //create a 2nd vertex buffer and pass in our data for openGL
-    unsigned int vertexBuffer2;
-    glGenBuffers(1,&vertexBuffer2);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer2);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer2_data),g_vertex_buffer2_data, GL_STATIC_DRAW);
+
+      //Colour Buffers
+//    unsigned int colorBuffer;
+//    glGenBuffers(1,&colorBuffer);
+//    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+//    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
 
-    //Colour Buffers
-    unsigned int colorBuffer2;
-    glGenBuffers(1,&colorBuffer2);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer2);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer2_data), g_color_buffer2_data, GL_STATIC_DRAW);
-
+//    //Colour Buffers
+//    unsigned int colorBuffer2;
+//    glGenBuffers(1,&colorBuffer2);
+//    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer2);
+//    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer2_data), g_color_buffer2_data, GL_STATIC_DRAW);
+//
 
     do
     {
@@ -184,8 +215,13 @@ int main()
 
         glUseProgram(programID);
 
-
         glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP[0][0]);
+
+        // Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Texture);
+		// Set our "myTextureSampler" sampler to use Texture Unit 0
+		glUniform1i(TextureID, 0);
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
@@ -200,11 +236,11 @@ int main()
         );
 
         glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
         glVertexAttribPointer
         (
         1,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
-        3,                 // size
+        2,                 // size
         GL_FLOAT,          // type
         GL_FALSE,          // normalized?
         0,                 // array buffer offset
@@ -213,38 +249,25 @@ int main()
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
 
+
         glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP2[0][0]);
 
+//        glEnableVertexAttribArray(3);
+//        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer2);
+//        glVertexAttribPointer
+//        (
+//        3,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
+//        3,                 // size
+//        GL_FLOAT,          // type
+//        GL_FALSE,          // normalized?
+//        0,                 // array buffer offset
+//        (void*)0
+//        );
 
-        glEnableVertexAttribArray(2);
-        glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer2);
-        glVertexAttribPointer
-        (
-        2,                 // attribute 0, no real reason for 0, but must match the layout in the shader.
-        3,                 // size
-        GL_FLOAT,          // type
-        GL_FALSE,          // normalized?
-        0,                 // array buffer offset
-        (void*)0
-        );
+        glDrawArrays(GL_TRIANGLES,0,12*3);
 
-        glEnableVertexAttribArray(3);
-        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer2);
-        glVertexAttribPointer
-        (
-        3,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
-        3,                 // size
-        GL_FLOAT,          // type
-        GL_FALSE,          // normalized?
-        0,                 // array buffer offset
-        (void*)0
-        );
-
-
-
-        glDrawArrays(GL_TRIANGLES,0,3);
         glDisableVertexAttribArray(0);
-
+		glDisableVertexAttribArray(1);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -252,6 +275,13 @@ int main()
     while (
         glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0
     );
+
+    // Cleanup VBO and shader
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &uvBuffer);
+	glDeleteProgram(programID);
+	glDeleteTextures(1, &Texture);
+	glDeleteVertexArrays(1, &VertexArrayID);
 
 
 }

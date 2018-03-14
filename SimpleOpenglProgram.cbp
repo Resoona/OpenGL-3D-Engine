@@ -38,6 +38,10 @@
 			<Add library="SDL2" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="shader.cpp" />
+		<Unit filename="shader.h" />
+		<Unit filename="shaders/SimpleFragmentShader.fragmentshader" />
+		<Unit filename="shaders/SimpleVertexShader.vertexshader" />
 		<Extensions>
 			<code_completion />
 			<envvars />
