@@ -12,67 +12,34 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include "graphics/window.h"
 #include "shader.h"
 #include "texture.h"
 
 int main()
 {
-    if (!glfwInit())
-    {
-        fprintf(stderr,"Failed to initialize GLFW\n");
-        return -1;
-    }
+    Window window("OpenGL!", 960, 540);
 
-    glfwWindowHint(GLFW_SAMPLES,4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-    //Creating our main window
-    GLFWwindow* window;
+    GLuint programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
+    unsigned int MatrixID = glGetUniformLocation(programID, "MVP");
 
-    window = glfwCreateWindow(1024,768,"Application", NULL,NULL);
-    if (window == NULL)
-    {
-        fprintf(stderr,"Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible.");
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glewExperimental=true;
-    if (glewInit() != GLEW_OK)
-    {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        return -1;
-    }
-
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-    glEnable(GL_DEPTH_TEST);
-
-    glDepthFunc(GL_LESS);
 
     //Create a vertex array object and bind it
     unsigned int VertexArrayID;
     glGenVertexArrays(1,&VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-    GLuint programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
-
-
-    unsigned int MatrixID = glGetUniformLocation(programID, "MVP");
-
-    float width = 4.0f;
-    float height = 3.0f;
+    float projection_Width = 4.0f;
+    float projection_Height = 3.0f;
 
 
     //Projection matrix: 45% field of view, 4:3 aspect ratio, display range: 0.1 unit <-> 100 units
-    glm::mat4 Projection = glm::perspective(glm::radians(60.0f), (float) width / (float) height, 0.1f, 100.0f);
+    glm::mat4 Projection = glm::perspective(glm::radians(60.0f), (float) projection_Width / (float) projection_Height, 0.1f, 100.0f);
 
 
     //Camera Matrix
-    glm::mat4 View = glm::lookAt(glm::vec3(-1.5,0,0), //Camera pos is at (4,3,3) in world space
+    glm::mat4 View = glm::lookAt(glm::vec3(-1,3,3), //Camera pos is at (4,3,3) in world space
                                  glm::vec3(0,0,0), //and looks at the origin
                                  glm::vec3(0,1,0)); //Y is upwards
 
@@ -208,10 +175,10 @@ int main()
 //    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer2);
 //    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer2_data), g_color_buffer2_data, GL_STATIC_DRAW);
 //
-
-    do
+//      glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+    while (!window.closed())
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        window.clear();
 
         glUseProgram(programID);
 
@@ -269,12 +236,10 @@ int main()
         glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+		window.update();
+
     }
-    while (
-        glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0
-    );
+
 
     // Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexBuffer);
