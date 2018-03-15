@@ -39,7 +39,7 @@ int main()
 
 
     //Camera Matrix
-    glm::mat4 View = glm::lookAt(glm::vec3(-1,3,3), //Camera pos is at (4,3,3) in world space
+    glm::mat4 View = glm::lookAt(glm::vec3(1,3,3), //Camera pos is at (4,3,3) in world space
                                  glm::vec3(0,0,0), //and looks at the origin
                                  glm::vec3(0,1,0)); //Y is upwards
 
@@ -179,6 +179,14 @@ int main()
     while (!window.closed())
     {
         window.clear();
+
+        //double x, y;
+
+		bool pressed = window.isKeyPressed(65);
+		//std::cout << x << ", " << y << std::endl;
+		if (pressed == GL_TRUE) {
+        std::cout << "a is being pressed" << std::endl;
+		}
 
         glUseProgram(programID);
 
