@@ -1,21 +1,22 @@
 
-#include <stdio.h>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <sstream>
 using namespace std;
 
-#include <stdlib.h>
-#include <string.h>
-
-#include <GL/glew.h>
 
 #include "shader.h"
 
-GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
+Shader::Shader(const char* vertPath, const char* fragPath)
+        : m_VertPath(vertPath), m_FragPath(fragPath)
+{
+    m_ShaderID = LoadShaders(m_VertPath,m_FragPath);
+
+}
+
+Shader::~Shader()
+{
+    glDeleteProgram(m_ShaderID);
+}
+
+GLuint Shader::LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
 	// Create the shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -107,4 +108,25 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	glDeleteShader(FragmentShaderID);
 
 	return ProgramID;
+}
+
+GLint Shader::getUniformLocation(const GLchar* name)
+{
+    return glGetUniformLocation(m_ShaderID, name);
+}
+
+void Shader::setUniformMat4(const GLchar* name, const glm::mat4& matrix)
+{
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
+}
+
+
+void Shader::enable() const
+{
+    glUseProgram(m_ShaderID);
+}
+
+void Shader::disable() const
+{
+    glUseProgram(0);
 }

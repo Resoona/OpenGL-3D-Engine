@@ -6,8 +6,8 @@
 #include <GLFW/glfw3.h>
 
 
-#define MAX_KEYS 1028
-#define MAX_BUTTONS 32
+#define MAX_KEYS GLFW_KEY_LAST
+#define MAX_BUTTONS GLFW_MOUSE_BUTTON_LAST
 
     class Window
     {

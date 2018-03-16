@@ -2,7 +2,8 @@
  * main.cpp
  *
  *  Created on: Mar 12, 2018
- *      Author: drew
+ *  Author: Drew Cornfield
+ *  This is a WIP.
  */
 
 
@@ -10,8 +11,6 @@
 #include <stdlib.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
 #include "graphics/window.h"
 #include "shader.h"
 #include "texture.h"
@@ -19,10 +18,9 @@
 int main()
 {
     Window window("OpenGL!", 960, 540);
-
-
-    GLuint programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
-    unsigned int MatrixID = glGetUniformLocation(programID, "MVP");
+    Shader shader("shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
+    shader.enable();
+    //unsigned int MatrixID = shader.getUniformLocation("MVP");
 
 
     //Create a vertex array object and bind it
@@ -54,9 +52,7 @@ int main()
     glm::mat4 MVP2 = Projection * View * Model2;
 
     GLuint Texture = loadDDS("uvtemplate.DDS");
-    GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
-
-
+    GLuint TextureID  = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
 
     //Cube Data
     static const GLfloat g_vertex_buffer_data[] = {
@@ -137,19 +133,7 @@ int main()
 		0.667979f, 1.0f-0.335851f
 	};
 
-//    static GLfloat g_color_buffer_data[12*3*3];
-//    static GLfloat g_color_buffer2_data[12*3*3];
 
-
-//    for (int v = 0; v < 12*3*3 ; v++){
-//       g_color_buffer_data[v+0] = (float)(rand() % 2);
-//       g_color_buffer_data[v+1] = (float)(rand() % 2);
-//       g_color_buffer_data[v+2] = (float)(rand() % 2);
-//       g_color_buffer2_data[v+0] = (float)(rand() % 2);
-//       g_color_buffer2_data[v+1] = (float)(rand() % 2);
-//       g_color_buffer2_data[v+2] = (float)(rand() % 2);
-//    }
-    //create a vertex buffer and pass in our data for openGL
     unsigned int vertexBuffer;
     glGenBuffers(1,&vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -162,35 +146,16 @@ int main()
 
 
 
-      //Colour Buffers
-//    unsigned int colorBuffer;
-//    glGenBuffers(1,&colorBuffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-//    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-
-
-//    //Colour Buffers
-//    unsigned int colorBuffer2;
-//    glGenBuffers(1,&colorBuffer2);
-//    glBindBuffer(GL_ARRAY_BUFFER, colorBuffer2);
-//    glBufferData(GL_ARRAY_BUFFER,sizeof(g_color_buffer2_data), g_color_buffer2_data, GL_STATIC_DRAW);
-//
-//      glfwGetKey(window,GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-    while (!window.closed())
+    while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
     {
         window.clear();
 
-        //double x, y;
-
-		bool pressed = window.isKeyPressed(65);
-		//std::cout << x << ", " << y << std::endl;
+		bool pressed = window.isKeyPressed(GLFW_KEY_A);
 		if (pressed == GL_TRUE) {
         std::cout << "a is being pressed" << std::endl;
 		}
 
-        glUseProgram(programID);
-
-        glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP[0][0]);
+		shader.setUniformMat4("MVP",MVP);
 
         // Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
@@ -224,20 +189,7 @@ int main()
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
 
-
-        glUniformMatrix4fv(MatrixID,1,GL_FALSE,&MVP2[0][0]);
-
-//        glEnableVertexAttribArray(3);
-//        glBindBuffer(GL_ARRAY_BUFFER,colorBuffer2);
-//        glVertexAttribPointer
-//        (
-//        3,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
-//        3,                 // size
-//        GL_FLOAT,          // type
-//        GL_FALSE,          // normalized?
-//        0,                 // array buffer offset
-//        (void*)0
-//        );
+        shader.setUniformMat4("MVP",MVP2);
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
 
@@ -252,7 +204,7 @@ int main()
     // Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &uvBuffer);
-	glDeleteProgram(programID);
+	shader.~Shader();
 	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
 
