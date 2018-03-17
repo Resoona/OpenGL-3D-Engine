@@ -56,7 +56,7 @@ int main()
     GLuint TextureID  = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
 
     //Cube Data
-    static const GLfloat g_vertex_buffer_data[] = {
+    GLfloat g_vertex_buffer_data[] = {
 		-1.0f,-1.0f,-1.0f,
 		-1.0f,-1.0f, 1.0f,
 		-1.0f, 1.0f, 1.0f,
@@ -95,7 +95,7 @@ int main()
 		 1.0f,-1.0f, 1.0f
 	};
 
-    static const GLfloat g_uv_buffer_data[] = {
+    GLfloat g_uv_buffer_data[] = {
 		0.000059f, 1.0f-0.000004f,
 		0.000103f, 1.0f-0.336048f,
 		0.335973f, 1.0f-0.335903f,
@@ -134,16 +134,18 @@ int main()
 		0.667979f, 1.0f-0.335851f
 	};
 
-
-    Buffer buffer(g_vertex_buffer_data,1,1);
-    buffer.bind();
+    Buffer vertexBuffer(g_vertex_buffer_data,36*3,3);
+    //buffer.bind();
+    //GLuint vertexBuffer;
+    //glGenBuffers(1,&vertexBuffer);
     //glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     //glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
 
-    GLuint uvBuffer;
-	glGenBuffers(1, &uvBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
+    Buffer uvBuffer(g_uv_buffer_data,36*2,2);
+    //GLuint uvBuffer;
+	//glGenBuffers(1, &uvBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
 
 
@@ -166,7 +168,7 @@ int main()
 
         glEnableVertexAttribArray(0);
         //glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-        buffer.bind();
+        vertexBuffer.bind();
         glVertexAttribPointer
         (
         0,                 // attribute 0, no real reason for 0, but must match the layout in the shader.
@@ -178,7 +180,8 @@ int main()
         );
 
         glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
+        //glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
+        uvBuffer.bind();
         glVertexAttribPointer
         (
         1,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
@@ -204,8 +207,8 @@ int main()
 
 
     // Cleanup VBO and shader
-	glDeleteBuffers(1, &vertexBuffer);
-	glDeleteBuffers(1, &uvBuffer);
+	//glDeleteBuffers(1, &vertexBuffer);
+	//glDeleteBuffers(1, &uvBuffer);
 	shader.~Shader();
 	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
