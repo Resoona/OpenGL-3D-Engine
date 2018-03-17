@@ -37,6 +37,14 @@
 			<Add library="GLFW" />
 			<Add library="SDL2" />
 		</Linker>
+		<Unit filename="graphics/buffers/buffer.cpp" />
+		<Unit filename="graphics/buffers/buffer.h" />
+		<Unit filename="graphics/buffers/indexbuffer.cpp" />
+		<Unit filename="graphics/buffers/indexbuffer.h" />
+		<Unit filename="graphics/buffers/vertexarray.cpp" />
+		<Unit filename="graphics/buffers/vertexarray.h" />
+		<Unit filename="graphics/window.cpp" />
+		<Unit filename="graphics/window.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="shader.cpp" />
 		<Unit filename="shader.h" />

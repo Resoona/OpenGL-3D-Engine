@@ -14,6 +14,7 @@
 #include "graphics/window.h"
 #include "shader.h"
 #include "texture.h"
+#include "graphics/buffers/buffer.h"
 
 int main()
 {
@@ -134,10 +135,10 @@ int main()
 	};
 
 
-    unsigned int vertexBuffer;
-    glGenBuffers(1,&vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
+    Buffer buffer(g_vertex_buffer_data,1,1);
+    buffer.bind();
+    //glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    //glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
 
     GLuint uvBuffer;
 	glGenBuffers(1, &uvBuffer);
@@ -164,7 +165,8 @@ int main()
 		glUniform1i(TextureID, 0);
 
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+        //glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+        buffer.bind();
         glVertexAttribPointer
         (
         0,                 // attribute 0, no real reason for 0, but must match the layout in the shader.
