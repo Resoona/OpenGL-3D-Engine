@@ -6,7 +6,6 @@
  *  This is a WIP.
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
@@ -15,19 +14,16 @@
 #include "shader.h"
 #include "texture.h"
 #include "graphics/buffers/buffer.h"
+#include "graphics/buffers/indexbuffer.h"
+#include "graphics/buffers/vertexarray.h"
 
 int main()
 {
     Window window("OpenGL!", 960, 540);
     Shader shader("shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
     shader.enable();
-    //unsigned int MatrixID = shader.getUniformLocation("MVP");
 
 
-    //Create a vertex array object and bind it
-    unsigned int VertexArrayID;
-    glGenVertexArrays(1,&VertexArrayID);
-    glBindVertexArray(VertexArrayID);
 
     float projection_Width = 4.0f;
     float projection_Height = 3.0f;
@@ -43,14 +39,14 @@ int main()
                                  glm::vec3(0,1,0)); //Y is upwards
 
     //Matrix Model: an identity matrix (model will be at the origin)
-    glm::mat4 Model = glm::translate(glm::mat4(),glm::vec3(1.0f,0.0f,-1.0f));
-    glm::mat4 Model2 = glm::translate(glm::mat4(),glm::vec3(-2.0f,0.0f,-1.0f));
+    glm::mat4 spriteModel1 = glm::translate(glm::mat4(),glm::vec3(1.0f,0.0f,-1.0f));
+    glm::mat4 spriteModel2 = glm::translate(glm::mat4(),glm::vec3(-2.0f,0.0f,-1.0f));
     //glm::mat4 TriangleModel = glm::mat4(1.0f);
 
 
     //Matrix Multiplication
-    glm::mat4 MVP = Projection * View * Model;
-    glm::mat4 MVP2 = Projection * View * Model2;
+    glm::mat4 MVP = Projection * View * spriteModel1;
+    glm::mat4 MVP2 = Projection * View * spriteModel2;
 
     GLuint Texture = loadDDS("uvtemplate.DDS");
     GLuint TextureID  = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
@@ -134,31 +130,25 @@ int main()
 		0.667979f, 1.0f-0.335851f
 	};
 
-    Buffer vertexBuffer(g_vertex_buffer_data,36*3,3);
-    //buffer.bind();
-    //GLuint vertexBuffer;
-    //glGenBuffers(1,&vertexBuffer);
-    //glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    //glBufferData(GL_ARRAY_BUFFER,sizeof(g_vertex_buffer_data),g_vertex_buffer_data, GL_STATIC_DRAW);
 
-    Buffer uvBuffer(g_uv_buffer_data,36*2,2);
-    //GLuint uvBuffer;
-	//glGenBuffers(1, &uvBuffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
+    //Create a vertex array object then bind our buffers
+    VertexArray sprite1;
 
-
+    sprite1.addBuffer(new Buffer(g_vertex_buffer_data,36*3,3),0);
+    sprite1.addBuffer(new Buffer(g_uv_buffer_data,36*2,2),1);
 
     while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
     {
         window.clear();
 
-		bool pressed = window.isKeyPressed(GLFW_KEY_A);
-		if (pressed == GL_TRUE) {
-        std::cout << "a is being pressed" << std::endl;
-		}
-
-		shader.setUniformMat4("MVP",MVP);
+		bool Apressed = window.isKeyPressed(GLFW_KEY_A);
+		if (Apressed == GL_TRUE) {  std::cout << "a is being pressed" << std::endl; }
+		bool Spressed = window.isKeyPressed(GLFW_KEY_S);
+		if (Spressed == GL_TRUE) {  std::cout << "s is being pressed" << std::endl; }
+		bool Dpressed = window.isKeyPressed(GLFW_KEY_D);
+		if (Dpressed == GL_TRUE) {  std::cout << "d is being pressed" << std::endl; }
+		bool Wpressed = window.isKeyPressed(GLFW_KEY_W);
+		if (Wpressed == GL_TRUE) {  std::cout << "w is being pressed" << std::endl; }
 
         // Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
@@ -166,40 +156,18 @@ int main()
 		// Set our "myTextureSampler" sampler to use Texture Unit 0
 		glUniform1i(TextureID, 0);
 
-        glEnableVertexAttribArray(0);
-        //glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-        vertexBuffer.bind();
-        glVertexAttribPointer
-        (
-        0,                 // attribute 0, no real reason for 0, but must match the layout in the shader.
-        3,                 // size
-        GL_FLOAT,          // type
-        GL_FALSE,          // normalized?
-        0,                 // array buffer offset
-        (void*)0
-        );
 
-        glEnableVertexAttribArray(1);
-        //glBindBuffer(GL_ARRAY_BUFFER,uvBuffer);
-        uvBuffer.bind();
-        glVertexAttribPointer
-        (
-        1,                 // attribute 0, no real reason for 1, but must match the layout in the shader.
-        2,                 // size
-        GL_FLOAT,          // type
-        GL_FALSE,          // normalized?
-        0,                 // array buffer offset
-        (void*)0
-        );
+        sprite1.bind();
+
+        shader.setUniformMat4("MVP",MVP); //Shift to Right
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
 
-        shader.setUniformMat4("MVP",MVP2);
+        shader.setUniformMat4("MVP",MVP2); //Shift to Left
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
 
-        glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+        sprite1.unbind();
 
 		window.update();
 
@@ -207,11 +175,9 @@ int main()
 
 
     // Cleanup VBO and shader
-	//glDeleteBuffers(1, &vertexBuffer);
-	//glDeleteBuffers(1, &uvBuffer);
 	shader.~Shader();
 	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
+	sprite1.~VertexArray();
 
 
 }

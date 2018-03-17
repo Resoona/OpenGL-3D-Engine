@@ -1,5 +1,4 @@
 #include "buffer.h"
-#include <iostream>
 
 
     Buffer::Buffer(GLfloat* data, GLsizei count, GLuint componentCount)
@@ -19,7 +18,7 @@
         glBindBuffer(GL_ARRAY_BUFFER,m_BufferID);
     }
 
-    void Buffer::unBind() const
+    void Buffer::unbind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER,0);
     }

@@ -11,7 +11,7 @@
         Buffer(GLfloat* data, GLsizei count, GLuint componentCount);
 
         void bind() const;
-        void unBind() const;
+        void unbind() const;
 
         inline GLuint getComponentCount() const { return m_ComponentCount; }
 
