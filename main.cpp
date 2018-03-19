@@ -136,6 +136,9 @@ int main()
 
     sprite1.addBuffer(new Buffer(g_vertex_buffer_data,36*3,3),0);
     sprite1.addBuffer(new Buffer(g_uv_buffer_data,36*2,2),1);
+    double lastTime = glfwGetTime();
+    int nbFrames = 0;
+    bool FPSToggle = false;
 
     while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
     {
@@ -149,6 +152,9 @@ int main()
 		if (Dpressed == GL_TRUE) {  std::cout << "d is being pressed" << std::endl; }
 		bool Wpressed = window.isKeyPressed(GLFW_KEY_W);
 		if (Wpressed == GL_TRUE) {  std::cout << "w is being pressed" << std::endl; }
+
+		if (window.isKeyPressed(GLFW_KEY_EQUAL) && window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) { FPSToggle = true; lastTime = glfwGetTime(); }
+		if (window.isKeyPressed(GLFW_KEY_MINUS) && window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) { FPSToggle = false; }
 
         // Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
@@ -166,6 +172,21 @@ int main()
         shader.setUniformMat4("MVP",MVP2); //Shift to Left
 
         glDrawArrays(GL_TRIANGLES,0,12*3);
+
+
+
+        if (FPSToggle){
+            // Measure speed
+            double currentTime = glfwGetTime();
+            nbFrames++;
+            if (currentTime - lastTime >= 1.0)
+            {   // If last prinf() was more than 1 sec ago
+                // printf and reset timer
+                printf("%f ms/frame\n", 1000.0/double(nbFrames));
+                nbFrames = 0;
+                lastTime += 1.0;
+            }
+        }
 
         sprite1.unbind();
 
