@@ -16,6 +16,7 @@
 #include "graphics/buffers/buffer.h"
 #include "graphics/buffers/indexbuffer.h"
 #include "graphics/buffers/vertexarray.h"
+#include "graphics/camera.h"
 
 int main()
 {
@@ -27,10 +28,18 @@ int main()
 
     float projection_Width = 4.0f;
     float projection_Height = 3.0f;
+    float fov =  60.0f;
+    float clippingClose = 0.1f;
+    float clippingFar = 100.0f;
 
-
-    //Projection matrix: 45% field of view, 4:3 aspect ratio, display range: 0.1 unit <-> 100 units
     glm::mat4 Projection = glm::perspective(glm::radians(60.0f), (float) projection_Width / (float) projection_Height, 0.1f, 100.0f);
+
+    //TODO
+    Camera camera(Projection);
+
+
+
+
 
 
     //Camera Matrix

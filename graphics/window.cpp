@@ -88,6 +88,7 @@
 
     }
 
+
     void Window::getMousePosition(double& x, double& y) const
     {
         x = mx;

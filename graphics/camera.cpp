@@ -1,8 +1,11 @@
-
 #include "camera.h"
 
-Camera::Camera(Window* window, float projection_Width, float projections_Height, float renderDist_Close, float renderDist_Far, float fov, GLint posx, GLint posy, GLint posz)
-{
-    m_projection = glm::perspective(glm::radians(fov), (float) projection_Width / (float) projection_Height, renderDist_Close, renderDist_Far);
-}
+    Camera::Camera(glm:mat4& projectionMatrix)
+            m_Projection = projectionMatrix
+    {
+        m_ViewMatrix = glm::mat4();
+        m_Position = glm::vec3();
+        m_Rotation = glm::vec3();
+    }
+
 
