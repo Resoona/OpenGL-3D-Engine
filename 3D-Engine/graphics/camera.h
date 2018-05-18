@@ -13,9 +13,9 @@ private:
 	int m_projHeight;
 	float m_fov;
 
-	int	m_x;
-	int m_y;
-	int m_z;
+	float m_x;
+	float m_y;
+	float m_z;
 
 
 
@@ -27,9 +27,10 @@ private:
 
 public: 
 
-	Camera(int projWidth, int projHeight, float fov, int x, int y, int z);
+	Camera(int projWidth, int projHeight, float fov, float x, float y, float z);
 	~Camera();
 	inline glm::mat4 getMV() { return m_MV; };
+	void updatePos(float newx,float newy,float newz);
 	void update();
 	void reset() const;
 
