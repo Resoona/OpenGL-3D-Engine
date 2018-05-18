@@ -11,8 +11,6 @@ Model::Model(Camera camera, int mx, int my, int mz)
 
 Model::~Model()
 {
-
-
 }
 
 void Model::updatePos(int newx, int newy, int newz)

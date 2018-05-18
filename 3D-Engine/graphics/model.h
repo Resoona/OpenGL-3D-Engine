@@ -17,12 +17,7 @@ private:
 public:
 	Model(Camera camera, int mx, int my, int mz);
 	~Model();
-
-	
 	void updatePos(int newx, int newy, int newz);
-
-
 	glm::mat4 getMVP(Camera updatedCamera);
-
 
 };

@@ -7,7 +7,7 @@
 
 #include "texture.h"
 
-
+//This loader is from OpenGL-tutorials.com
 
 GLuint loadBMP_custom(const char * imagepath) {
 
