@@ -8,9 +8,8 @@
 #include "../graphics/texture.h"
 #include "../graphics/buffers/vertexarray.h"
 #include "../graphics/buffers/buffer.h"
+#include "../graphics/model.h"
 
-
-using namespace std;
 
 int main()
 {
@@ -22,27 +21,27 @@ int main()
 	//========================================================================
 	// Matrix for transformations
 	//========================================================================
+	int projection_Width = 4;
+	int projection_Height = 3;
+	float FOV = 45.0f;
+	int cameraX = 1;
+	int cameraY = 3;
+	int cameraZ = 5;
 
-	float projection_Width = 4.0f;
-	float projection_Height = 3.0f;
-
-	//Projection matrix: 45% field of view, 4:3 aspect ratio, display range: 0.1 unit <-> 100 units
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float)projection_Width / (float)projection_Height, 0.1f, 100.0f);
-
-	//Camera Matrix
-	glm::mat4 View = glm::lookAt(glm::vec3(1, 3, 5), //Camera pos is at (4,3,3) in world space
-	glm::vec3(0, 0, 0), //and looks at the origin
-	glm::vec3(0, 1, 0)); //Y is upwards
-
-	//Matrix Model: an identity matrix (model will be at the origin)
-	glm::mat4 spriteModel1 = glm::translate(glm::mat4(), glm::vec3(1.0f, 0.0f, -1.0f));
-	glm::mat4 spriteModel2 = glm::translate(glm::mat4(), glm::vec3(-2.0f, 0.0f, -1.0f));
-	//glm::mat4 TriangleModel = glm::mat4(1.0f);
+	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ);
 
 
-	//Matrix Multiplication
-	glm::mat4 MVP = Projection * View * spriteModel1;
-	glm::mat4 MVP2 = Projection * View * spriteModel2;
+	int sprite1x = 1;
+	int sprite1y = 0;
+	int sprite1z = -1;
+	Model sprite1Model(camera, sprite1x, sprite1y, sprite1z);
+	int sprite2x = -2;
+	int sprite2y = 0;
+	int sprite2z = -1;
+	Model sprite2Model(camera, sprite2x, sprite2y, sprite2z);
+
+
+
 
 
 	//========================================================================
@@ -150,7 +149,7 @@ int main()
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.clear();
-		shader.setUniformMat4("MVP", MVP);
+		shader.setUniformMat4("MVP", sprite1Model.getMVP(camera));
 
 		bool Apressed = window.isKeyPressed(GLFW_KEY_A);
 		if (Apressed == GL_TRUE) { std::cout << "a is being pressed" << std::endl; }
@@ -192,7 +191,7 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
-		shader.setUniformMat4("MVP", MVP2);
+		shader.setUniformMat4("MVP", sprite2Model.getMVP(camera));
 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
