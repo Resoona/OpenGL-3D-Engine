@@ -13,11 +13,15 @@ private:
 	int m_projHeight;
 	float m_fov;
 
-	float m_x;
-	float m_y;
-	float m_z;
 
+	glm::vec3 m_pos;
+	glm::vec3 m_front;
+	glm::vec3 m_up;
 
+	glm::vec3 m_right;
+
+	float m_pitch;
+	float m_yaw;
 
 	glm::mat4 m_Projection;
 	glm::mat4 m_View;
@@ -27,10 +31,10 @@ private:
 
 public: 
 
-	Camera(int projWidth, int projHeight, float fov, float x, float y, float z);
+	Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw);
 	~Camera();
 	inline glm::mat4 getMV() { return m_MV; };
-	void updatePos(float newx,float newy,float newz);
+	void updatePos(float newx,float newy,float newz, float newpitch, float newyaw);
 	void update();
 	void reset() const;
 

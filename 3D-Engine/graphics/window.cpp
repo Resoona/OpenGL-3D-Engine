@@ -47,7 +47,7 @@ bool Window::init()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 
 	if (!m_Window)
 	{
@@ -62,6 +62,7 @@ bool Window::init()
 	glfwSetKeyCallback(m_Window, key_callback);
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 	glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK)

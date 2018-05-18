@@ -1,38 +1,62 @@
 #include "camera.h"
 
 
-Camera::Camera(int projWidth, int projHeight, float fov, float x, float y, float z)
-	: m_projWidth(projWidth), m_projHeight(projHeight), m_fov(fov), m_x(x), m_y(y), m_z(z)
+Camera::Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw)
+	: m_projWidth(projWidth), m_projHeight(projHeight), m_fov(fov), m_pitch(pitch), m_yaw(yaw)
 {
 
-	m_Projection = glm::perspective(glm::radians(fov), (float)m_projWidth / (float)m_projHeight, 0.1f, 100.0f);
-	m_View = glm::lookAt(glm::vec3(m_x, m_y, m_z), //Camera pos is at (4,3,3) in world space
-				glm::vec3(m_x, m_y, m_z) + glm::vec3(0.0f, 0.0f, -1.0f),
-				glm::vec3(0, 1, 0)); //Y is upwards
+	m_pos = glm::vec3(x, y, z);
 
-	m_MV = m_Projection * m_View;
+	m_front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+	m_front.y = sin(glm::radians(m_pitch));
+	m_front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+
+	m_front = glm::normalize(m_front);
+
+	m_up.x = 0.0f;
+	m_up.y = 1.0f;
+	m_up.z = 0.0f;
+
+	m_right = glm::normalize(glm::cross(m_front, m_up));
+	m_up = glm::normalize(glm::cross(m_right, m_front));
+
+	update();
 }
 
 Camera::~Camera()
 {
 }
 
-void Camera::updatePos(float newx, float newy, float newz)
+void Camera::updatePos(float newx, float newy, float newz, float newpitch, float newyaw)
 {
-	m_x = newx;
-	m_y = newy;
-	m_z = newz;
+	m_pos = glm::vec3(newx, newy, newz);
+	m_pitch = newpitch;
+	m_yaw = newyaw;
+
+	m_front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+	m_front.y = sin(glm::radians(m_pitch));
+	m_front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+
+	m_front = glm::normalize(m_front);
+
+	m_up.x = 0.0f;
+	m_up.y = 1.0f;
+	m_up.z = 0.0f;
+
+	m_right = glm::normalize(glm::cross(m_front, m_up));
+	m_up = glm::normalize(glm::cross(m_right, m_front));
+
+	
 	update();
 }
 
 void Camera::update()
 {
 	m_Projection = glm::perspective(glm::radians(m_fov), (float)m_projWidth / (float)m_projHeight, 0.1f, 100.0f);
-	m_View = glm::lookAt(glm::vec3(m_x, m_y, m_z), //Camera pos is at (4,3,3) in world space
-		glm::vec3(m_x, m_y, m_z) + glm::vec3(0.0f, 0.0f, -1.0f),
-		glm::vec3(0, 1, 0)); //Y is upwards
+	m_View = glm::lookAt(m_pos,
+		m_pos + m_front,
+		m_up);
 
 	m_MV = m_Projection * m_View;
-
 }
 

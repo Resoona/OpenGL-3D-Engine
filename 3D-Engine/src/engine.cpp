@@ -25,8 +25,10 @@ int main()
 	float cameraX = 0;
 	float cameraY = 2;
 	float cameraZ = 5;
+	float cameraPitch = 0.0f;
+	float cameraYaw = -90.0f;
 
-	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ);
+	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
 //========================================================================
 // Create MVP's for Sprite objects (pass in camera object)
@@ -155,6 +157,14 @@ int main()
 	float deltaTime = 0.0f;	// Time between current frame and last frame
 	float lastFrame = 0.0f; // Time of last frame
 
+	double mouseX = 0;
+	double mouseY = 0;
+	window.getMousePosition(mouseX, mouseY);
+	double lastX = 0;
+	double lastY = 0;
+	window.getMousePosition(lastX, lastY);
+	float mouseSensitivity = 0.05f;
+
 	
 
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
@@ -199,9 +209,23 @@ int main()
 		if (Qpressed == GL_TRUE) {
 			if (cameraY < 10) cameraY += cameraSpeed;
 		}
-		camera.updatePos(cameraX, cameraY, cameraZ);
-		camera.update();
+		
 
+//========================================================================
+// Mouse Controller
+//========================================================================		
+		float xoffset = mouseX - lastX;
+		float yoffset = lastY - mouseY;
+		lastX = mouseX;
+		lastY = mouseY;
+		window.getMousePosition(mouseX, mouseY);
+		xoffset *= mouseSensitivity;
+		yoffset *= mouseSensitivity;
+
+		cameraYaw += xoffset;
+		cameraPitch += yoffset;
+
+		camera.updatePos(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 //========================================================================
 // FPS Toggler
 //========================================================================
