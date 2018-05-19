@@ -8,6 +8,7 @@
 #include "../graphics/texture.h"
 #include "../graphics/buffers/vertexarray.h"
 #include "../graphics/model.h"
+#include "../graphics/buffers/indexbuffer.h"
 
 
 int main()
@@ -38,8 +39,8 @@ int main()
 	int sprite1y = 0;
 	int sprite1z = -1;
 	Model sprite1Model(camera, sprite1x, sprite1y, sprite1z);
-	int sprite2x = -2;
-	int sprite2y = 0;
+	int sprite2x = -3;
+	int sprite2y = -1;
 	int sprite2z = -1;
 	Model sprite2Model(camera, sprite2x, sprite2y, sprite2z);
 
@@ -57,47 +58,47 @@ int main()
 
 	//Cube Data
 	GLfloat g_vertex_buffer_data[] = {
-		-0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
 
-		-0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
 
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f, -0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
 
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
 
-		-0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f,  0.5f,
-		-0.5f, -0.5f, -0.5f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
 
-		-0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f,  0.5f,
-		-0.5f,  0.5f, -0.5f
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f
 	};
 
 	GLfloat g_uv_buffer_data[] = {
@@ -139,10 +140,57 @@ int main()
 		0.0f, 0.0f
 	};
 
-	VertexArray sprite1;
+	//Rectangle
+	GLfloat vertices[] =
+	{
+		0, 0, 0,
+		0, 2, 0,
+		2, 2, 0,
+		2, 0, 0
+	};
+
+	//UV data for indexbuffer renders exactly the same as indicies
+	GLfloat uvdata[] = {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f
+		
+	};
+
+	GLushort indices[] =
+	{
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	//Cube is textured so we dont want color
+	GLfloat colorsA[] = { 0,0,0,0 };
+
+	GLfloat colorsB[] =
+	{
+		0, 0, 0.7, 1,
+		0, 0, 0.7, 1,
+		0, 0, 0.7, 1,
+		0, 0, 0.7, 1
+	};
+
+	
+
+
+
+
+	VertexArray sprite1, sprite2;
+	IndexBuffer ibo(indices, 6);
 
 	sprite1.addBuffer(new Buffer(g_vertex_buffer_data, 36 * 3, 3), 0);
 	sprite1.addBuffer(new Buffer(g_uv_buffer_data, 36* 2, 2), 1);
+	sprite1.addBuffer(new Buffer(colorsA, 4, 4), 2);
+
+	sprite2.addBuffer(new Buffer(vertices, 3 * 4, 3), 0);
+	sprite2.addBuffer(new Buffer(uvdata, 4 * 2, 2), 1);
+	sprite2.addBuffer(new Buffer(colorsB, 4 * 4, 4), 2);
+
 
 //========================================================================
 // Global vars for update loop
@@ -277,9 +325,11 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
+		sprite2.bind();
+		ibo.bind();
 		shader.setUniformMat4("MVP", sprite2Model.getMVP(camera));
 
-		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_SHORT, 0);
 
 
 		window.update();

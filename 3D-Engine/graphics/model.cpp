@@ -13,6 +13,7 @@ Model::~Model()
 {
 }
 
+
 void Model::updatePos(int newx, int newy, int newz)
 {
 	m_mx = newx;

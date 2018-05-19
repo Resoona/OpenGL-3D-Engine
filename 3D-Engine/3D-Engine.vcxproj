@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="graphics\buffers\buffer.cpp" />
+    <ClCompile Include="graphics\buffers\indexbuffer.cpp" />
     <ClCompile Include="graphics\buffers\vertexarray.cpp" />
     <ClCompile Include="graphics\camera.cpp" />
     <ClCompile Include="graphics\model.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\buffers\buffer.h" />
+    <ClInclude Include="graphics\buffers\indexbuffer.h" />
     <ClInclude Include="graphics\buffers\vertexarray.h" />
     <ClInclude Include="graphics\camera.h" />
     <ClInclude Include="graphics\model.h" />
