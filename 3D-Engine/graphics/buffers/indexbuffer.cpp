@@ -1,4 +1,4 @@
-﻿#include "indexbuffer.h"
+﻿#include "IndexBuffer.h"
 
 IndexBuffer::IndexBuffer(GLushort* data, GLsizei count)
 	: m_Count(count)

@@ -3,7 +3,7 @@
 #include <vector>
 #include <GL/glew.h>
 
-#include "buffer.h"
+#include "Buffer.h"
 
 class VertexArray
 {

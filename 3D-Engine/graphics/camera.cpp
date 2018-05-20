@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "Camera.h"
 
 
 Camera::Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw)

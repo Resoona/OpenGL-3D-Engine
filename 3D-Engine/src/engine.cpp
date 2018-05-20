@@ -3,12 +3,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../graphics/window.h"
-#include "../graphics/shader.h"
-#include "../graphics/texture.h"
-#include "../graphics/buffers/vertexarray.h"
-#include "../graphics/model.h"
-#include "../graphics/buffers/indexbuffer.h"
+#include "../graphics/Window.h"
+#include "../graphics/Texture.h"
+#include "../graphics/ModelTransform.h"
+#include "../graphics/StaticSprite.h"
 
 
 int main()
@@ -32,24 +30,13 @@ int main()
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
-//========================================================================
-// Create MVP's for Sprite objects (pass in camera object)
-//========================================================================
-	int sprite1x = 1;
-	int sprite1y = 0;
-	int sprite1z = -1;
-	Model sprite1Model(camera, sprite1x, sprite1y, sprite1z);
-	int sprite2x = -3;
-	int sprite2y = -1;
-	int sprite2z = -1;
-	Model sprite2Model(camera, sprite2x, sprite2y, sprite2z);
+
 
 //========================================================================
 // Texturing
 //========================================================================
 
-	GLuint Texture = loadBMP_custom("textures/crate.bmp");
-	GLuint TextureID = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
+	Texture crateTexture(shader.getShaderID(), "textures/crate.bmp");
 
 //========================================================================
 // Vertex Data
@@ -140,57 +127,34 @@ int main()
 		0.0f, 0.0f
 	};
 
-	//Rectangle
-	GLfloat vertices[] =
-	{
-		0, 0, 0,
-		0, 2, 0,
-		2, 2, 0,
-		2, 0, 0
-	};
 
-	//UV data for indexbuffer renders exactly the same as indicies
-	GLfloat uvdata[] = {
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f
-		
-	};
-
-	GLushort indices[] =
-	{
-		0, 1, 2,
-		2, 3, 0
-	};
 
 	//Cube is textured so we dont want color
 	GLfloat colorsA[] = { 0,0,0,0 };
 
-	GLfloat colorsB[] =
-	{
-		0, 0, 0.7, 1,
-		0, 0, 0.7, 1,
-		0, 0, 0.7, 1,
-		0, 0, 0.7, 1
-	};
+
+	glm::vec4 colors(1, 0, 0, 1);
 
 	
 
+//========================================================================
+// Create MVP's for Sprite objects (pass in camera object)
+//========================================================================
+
+	ModelTransform sprite1Model(camera, 1, 0, -1);
+
+	ModelTransform sprite2Model(camera, -3, -1, -1);
 
 
-
-	VertexArray sprite1, sprite2;
-	IndexBuffer ibo(indices, 6);
+	VertexArray sprite1;// , sprite2;
+	//IndexBuffer ibo(indices, 6);
 
 	sprite1.addBuffer(new Buffer(g_vertex_buffer_data, 36 * 3, 3), 0);
 	sprite1.addBuffer(new Buffer(g_uv_buffer_data, 36* 2, 2), 1);
 	sprite1.addBuffer(new Buffer(colorsA, 4, 4), 2);
+			   
 
-	sprite2.addBuffer(new Buffer(vertices, 3 * 4, 3), 0);
-	sprite2.addBuffer(new Buffer(uvdata, 4 * 2, 2), 1);
-	sprite2.addBuffer(new Buffer(colorsB, 4 * 4, 4), 2);
-
+	StaticSprite sprite2(1, 1, 2, 2, colors, shader);
 
 //========================================================================
 // Global vars for update loop
@@ -325,17 +289,17 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
-		sprite2.bind();
-		ibo.bind();
+		sprite2.bindArrays();
+
 		shader.setUniformMat4("MVP", sprite2Model.getMVP(camera));
 
-		glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_TRIANGLES, sprite2.getIBO()->getCount(), GL_UNSIGNED_SHORT, 0);
 
 
 		window.update();
 	}
 	shader.~Shader();
-	glDeleteTextures(1, &Texture);
+	crateTexture.~Texture();
 	sprite1.~VertexArray();
 	
 	return 0;

@@ -1,7 +1,23 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "../graphics/Shader.h"
+
+class Texture
+{
+private:
+	const char* m_imageloc;
+	GLint m_ShaderID;
+	GLuint m_Texture;
+
+
+public:
+	Texture(GLint ShaderID, const char* imageloc);
+	~Texture();
+
+	void setUniformLocation(const char* name);
+
+
+};
 
 
 #ifndef TEXTURE_H

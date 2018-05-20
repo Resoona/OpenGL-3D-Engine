@@ -15,60 +15,66 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine.cpp">
+    <ClCompile Include="graphics\ModelTransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\window.cpp">
+    <ClCompile Include="graphics\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\shader.cpp">
+    <ClCompile Include="graphics\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\texture.cpp">
+    <ClCompile Include="graphics\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\buffers\vertexarray.cpp">
+    <ClCompile Include="graphics\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\buffers\buffer.cpp">
+    <ClCompile Include="src\Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\camera.cpp">
+    <ClCompile Include="graphics\buffers\Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\model.cpp">
+    <ClCompile Include="graphics\buffers\IndexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\buffers\indexbuffer.cpp">
+    <ClCompile Include="graphics\buffers\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\StaticSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine.h">
+    <ClInclude Include="graphics\ModelTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\window.h">
+    <ClInclude Include="graphics\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\shader.h">
+    <ClInclude Include="graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\texture.h">
+    <ClInclude Include="graphics\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\buffers\vertexarray.h">
+    <ClInclude Include="graphics\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\buffers\buffer.h">
+    <ClInclude Include="src\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\camera.h">
+    <ClInclude Include="graphics\buffers\Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\model.h">
+    <ClInclude Include="graphics\buffers\IndexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\buffers\indexbuffer.h">
+    <ClInclude Include="graphics\buffers\VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\StaticSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
