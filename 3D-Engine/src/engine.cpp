@@ -3,10 +3,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../graphics/Window.h"
-#include "../graphics/Camera.h"
+
 #include "../graphics/Texture.h"
 #include "../graphics/StaticSprite.h"
+#include "InputHandler.h"
 
 
 int main()
@@ -31,21 +31,13 @@ int main()
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
-//========================================================================
-// Texturing
-//========================================================================
-
 	Texture crateTexture("textures/crate.bmp");
-
-//========================================================================
-// Create MVP's for Sprite objects (pass in camera object)
-//========================================================================
 
 	glm::vec4 colors(1, 1, 1, 1);
 
 	StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, shader);
 
-	StaticSprite sprite2(-3, -1, -1, 2, 2, 2, colors, shader);
+	StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, shader);
 
 //========================================================================
 // Global vars for update loop
@@ -66,6 +58,8 @@ int main()
 	window.getMousePosition(lastX, lastY);
 	auto mouseSensitivity = 0.05f;
 
+	InputHandler inputHandler(window);
+
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.clear();
@@ -73,62 +67,14 @@ int main()
 		glm::mat4 Model = glm::translate(glm::mat4(), *sprite1.getPosition());
 		shader.setUniformMat4("MVP", camera.getMV() * Model);
 
-//========================================================================
-// Keyboard input for Camera Motion
-//========================================================================
-		glm::vec3 currentFront = camera.getFront();
-		glm::vec3 currentUp = camera.getUp();
-		glm::vec3 cameraPos = camera.getPos();
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float cameraSpeed = 2.5f * deltaTime;
+		glm::vec3 cameraPos = camera.getPos();
 
-		//Speed boost
-		bool LShiftpressed = window.isKeyPressed(GLFW_KEY_LEFT_SHIFT);
-		if (LShiftpressed == GL_TRUE)
-		{
-			cameraSpeed = 7.5f * deltaTime;
-		}
-		//forwards
-		bool Wpressed = window.isKeyPressed(GLFW_KEY_W);
-		if (Wpressed == GL_TRUE) 
-		{
-			cameraPos += cameraSpeed * currentFront;
-		}
-		//backwards
-		bool Spressed = window.isKeyPressed(GLFW_KEY_S);
-		if (Spressed == GL_TRUE) 
-		{
-			cameraPos -= cameraSpeed * currentFront;
-		}
-		//left
-		bool Apressed = window.isKeyPressed(GLFW_KEY_A);
-		if (Apressed == GL_TRUE) 
-		{
-			cameraPos -= glm::normalize(glm::cross(currentFront, currentUp)) * cameraSpeed;
-		}
-		
-		//right
-		bool Dpressed = window.isKeyPressed(GLFW_KEY_D);
-		if (Dpressed == GL_TRUE) 
-		{
-			cameraPos += glm::normalize(glm::cross(currentFront, currentUp)) * cameraSpeed;
-		}
-		
-		//down
-		bool Qpressed = window.isKeyPressed(GLFW_KEY_Q);
-		if (Qpressed == GL_TRUE) 
-		{
-			 cameraPos.y -= cameraSpeed;
-		}
-		//up
-		bool Epressed = window.isKeyPressed(GLFW_KEY_E);
-		if (Epressed == GL_TRUE) 
-		{
-			cameraPos.y += cameraSpeed;
-		}
-		
+		//Callback - modifies values of cameraPos & FPSToggle
+		inputHandler.listen(camera, cameraPos, cameraSpeed, FPSToggle);
 
 //========================================================================
 // Mouse Controller
@@ -149,21 +95,8 @@ int main()
 //========================================================================
 // FPS Toggler
 //========================================================================
-		//Equals to enable FPS
-		if (window.isKeyPressed(GLFW_KEY_EQUAL) && window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT))
-		{
-			FPSToggle = true;
-			lastTime = glfwGetTime();
-		}
-		//Underscore to disable FPS
-		if (window.isKeyPressed(GLFW_KEY_MINUS) && window.isKeyPressed(GLFW_KEY_RIGHT_SHIFT))
-		{
-			FPSToggle = false; 
-		}
-
 		if (FPSToggle)
 		{
-			// Measure speed
 			double currentTime = glfwGetTime();
 			nbFrames++;
 			if (currentTime - lastTime >= 1.0)
@@ -174,7 +107,6 @@ int main()
 				lastTime += 1.0;
 			}
 		}
-
 //========================================================================
 // Draw Two cubes with same data (but different model coords)
 //========================================================================

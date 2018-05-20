@@ -131,24 +131,24 @@
     <ClCompile Include="graphics\buffers\IndexBuffer.cpp" />
     <ClCompile Include="graphics\buffers\VertexArray.cpp" />
     <ClCompile Include="graphics\Camera.cpp" />
-    <ClCompile Include="graphics\ModelTransform.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\StaticSprite.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="src\Engine.cpp" />
+    <ClCompile Include="src\InputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\buffers\Buffer.h" />
     <ClInclude Include="graphics\buffers\IndexBuffer.h" />
     <ClInclude Include="graphics\buffers\VertexArray.h" />
     <ClInclude Include="graphics\Camera.h" />
-    <ClInclude Include="graphics\ModelTransform.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />
     <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\InputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\SimpleFragmentShader.fragmentshader" />
