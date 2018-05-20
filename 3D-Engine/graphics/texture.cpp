@@ -9,11 +9,10 @@
 
 //This loader is from OpenGL-tutorials.com
 
-Texture::Texture(GLint ShaderID, const char* imageloc)
-	: m_ShaderID(ShaderID), m_imageloc(imageloc)
+Texture::Texture( const char* imageloc)
+	: m_imageloc(imageloc)
 {
 	m_Texture = loadBMP_custom(imageloc);
-	GLuint TextureID = glGetUniformLocation(ShaderID, "myTextureSampler");
 }
 
 Texture::~Texture()
@@ -21,10 +20,6 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_Texture);
 }
 
-void Texture::setUniformLocation(const char* name)
-{
-	GLuint TextureID = glGetUniformLocation(m_ShaderID, name);
-}
 
 GLuint loadBMP_custom(const char * imagepath) {
 

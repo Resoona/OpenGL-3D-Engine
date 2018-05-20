@@ -1,9 +1,12 @@
 ﻿#include "StaticSprite.h"
 
-StaticSprite::StaticSprite(float x, float y, float width, float height, const glm::vec4& color, Shader& shader)
+StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, const glm::vec4& color, Shader& shader)
 	: m_Shader(shader)
 {
 	m_VertexArray = new VertexArray();
+
+	m_position = new glm::vec3(x, y, z);
+	m_size = new glm::vec3(width, height, depth);
 
 	GLfloat verticies[] =
 	{
@@ -39,6 +42,114 @@ StaticSprite::StaticSprite(float x, float y, float width, float height, const gl
 	m_VertexArray->addBuffer(new Buffer(colors, sizeof(colors), 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(indices, 6);
+}
+
+StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, Texture* texture, Shader& shader)
+	: m_Shader(shader)
+{
+	
+	m_position = new glm::vec3(x, y, z);
+	m_size = new glm::vec3(width, height, depth);
+
+	GLuint TextureID = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
+
+	GLfloat verticies[] = {
+		-width, -height, -depth,
+		 width, -height, -depth,
+		 width,  height, -depth,
+		 width,  height, -depth,
+		-width,  height, -depth,
+		-width, -height, -depth,		 
+		-width, -height,  depth,
+		 width, -height,  depth,
+		 width,  height,  depth,
+		 width,  height,  depth,
+		-width,  height,  depth,
+		-width, -height,  depth,		 
+		-width,  height,  depth,
+		-width,  height, -depth,
+		-width, -height, -depth,
+		-width, -height, -depth,
+		-width, -height,  depth,
+		-width,  height,  depth,		 
+		 width,  height,  depth,
+		 width,  height, -depth,
+		 width, -height, -depth,
+		 width, -height, -depth,
+		 width, -height,  depth,
+		 width,  height,  depth,		
+		-width, -height, -depth,
+		 width, -height, -depth,
+		 width, -height,  depth,
+		 width, -height,  depth,
+		-width, -height,  depth,
+		-width, -height, -depth,
+		-width,  height, -depth,
+		 width,  height, -depth,
+		 width,  height,  depth,
+		 width,  height,  depth,
+		-width,  height,  depth,
+		-width,  height, -depth
+	};
+
+	GLfloat uvdata[] = {
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f
+	};
+
+	GLfloat colors[] =
+	{
+		0,0,0,0
+	};
+
+	GLushort indicies[] =
+	{
+		0
+	};
+
+	m_VertexArray = new VertexArray();
+
+	m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
+	m_VertexArray->addBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
+	m_VertexArray->addBuffer(new Buffer(colors, 4, 4), 2);
+
+	m_IndexBuffer = new IndexBuffer(indicies, 1);
+
+	
 }
 
 StaticSprite::~StaticSprite()

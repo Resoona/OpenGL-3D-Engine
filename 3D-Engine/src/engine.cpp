@@ -1,11 +1,11 @@
 #include <iostream>
-#include <stdio.h>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include "../graphics/Window.h"
+#include "../graphics/Camera.h"
 #include "../graphics/Texture.h"
-#include "../graphics/ModelTransform.h"
 #include "../graphics/StaticSprite.h"
 
 
@@ -18,6 +18,7 @@ int main()
 //========================================================================
 // Create Camera Object (singular entity)
 //========================================================================
+
 	const int projection_Width = 4;
 	const int projection_Height = 3;
 	const float FOV = 45.0f;
@@ -30,142 +31,32 @@ int main()
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
-
-
 //========================================================================
 // Texturing
 //========================================================================
 
-	Texture crateTexture(shader.getShaderID(), "textures/crate.bmp");
-
-//========================================================================
-// Vertex Data
-//========================================================================
-
-
-	//Cube Data
-	GLfloat g_vertex_buffer_data[] = {
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f
-	};
-
-	GLfloat g_uv_buffer_data[] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		0.0f, 0.0f
-	};
-
-
-
-	//Cube is textured so we dont want color
-	GLfloat colorsA[] = { 0,0,0,0 };
-
-
-	glm::vec4 colors(1, 0, 0, 1);
-
-	
+	Texture crateTexture("textures/crate.bmp");
 
 //========================================================================
 // Create MVP's for Sprite objects (pass in camera object)
 //========================================================================
 
-	ModelTransform sprite1Model(camera, 1, 0, -1);
+	glm::vec4 colors(1, 1, 1, 1);
 
-	ModelTransform sprite2Model(camera, -3, -1, -1);
+	StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, shader);
 
-
-	VertexArray sprite1;// , sprite2;
-	//IndexBuffer ibo(indices, 6);
-
-	sprite1.addBuffer(new Buffer(g_vertex_buffer_data, 36 * 3, 3), 0);
-	sprite1.addBuffer(new Buffer(g_uv_buffer_data, 36* 2, 2), 1);
-	sprite1.addBuffer(new Buffer(colorsA, 4, 4), 2);
-			   
-
-	StaticSprite sprite2(1, 1, 2, 2, colors, shader);
+	StaticSprite sprite2(-3, -1, -1, 2, 2, 2, colors, shader);
 
 //========================================================================
 // Global vars for update loop
 //========================================================================
 
-	double lastTime = glfwGetTime();
-	int nbFrames = 0;
-	bool FPSToggle = false;
+	auto lastTime = glfwGetTime();
+	auto nbFrames = 0;
+	auto FPSToggle = false;
 
-	float deltaTime = 0.0f;	// Time between current frame and last frame
-	float lastFrame = 0.0f; // Time of last frame
+	auto deltaTime = 0.0f;	// Time between current frame and last frame
+	auto lastFrame = 0.0f; // Time of last frame
 
 	double mouseX = 0;
 	double mouseY = 0;
@@ -173,12 +64,14 @@ int main()
 	double lastX = 0;
 	double lastY = 0;
 	window.getMousePosition(lastX, lastY);
-	float mouseSensitivity = 0.05f;
+	auto mouseSensitivity = 0.05f;
 
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.clear();
-		shader.setUniformMat4("MVP", sprite1Model.getMVP(camera));
+
+		glm::mat4 Model = glm::translate(glm::mat4(), *sprite1.getPosition());
+		shader.setUniformMat4("MVP", camera.getMV() * Model);
 
 //========================================================================
 // Keyboard input for Camera Motion
@@ -285,22 +178,26 @@ int main()
 //========================================================================
 // Draw Two cubes with same data (but different model coords)
 //========================================================================
-		sprite1.bind();
+
+
+		sprite1.bindArrays();
+
+		Model = glm::translate(glm::mat4(), *sprite1.getPosition());
+		shader.setUniformMat4("MVP", camera.getMV() * Model);
 
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
 		sprite2.bindArrays();
 
-		shader.setUniformMat4("MVP", sprite2Model.getMVP(camera));
+		Model = glm::translate(glm::mat4(), *sprite2.getPosition());
+		shader.setUniformMat4("MVP", camera.getMV() * Model);
 
 		glDrawElements(GL_TRIANGLES, sprite2.getIBO()->getCount(), GL_UNSIGNED_SHORT, 0);
-
 
 		window.update();
 	}
 	shader.~Shader();
 	crateTexture.~Texture();
-	sprite1.~VertexArray();
 	
 	return 0;
 
