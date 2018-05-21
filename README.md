@@ -9,7 +9,7 @@ Feel free to follow my progress on my website as I post updates to my applicatio
 
 http://drewcornfield.com/
 
-![alt text](https://media.giphy.com/media/oywlDEdM8225Dx7wFC/giphy.gif)
+![alt text](https://i.imgur.com/pXYXxSH.png)
 
 Compile/Linker instructions:
 
