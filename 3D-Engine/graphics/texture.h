@@ -12,7 +12,7 @@ public:
 	Texture(const char* imageloc);
 	~Texture();
 
-
+	inline GLuint getID() const { return m_Texture; }
 
 };
 

@@ -29,12 +29,17 @@ int main()
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
 	Texture crateTexture("textures/crate.bmp");
+	Texture sandTexture("textures/Sand_Texture.bmp");
 
-	glm::vec4 colors(1, 0.5, 1, 1);
+	const glm::vec4 colors(1, 0.5, 1, 1);
+	glm::vec4 green(0, 1, 0, 1);
 
-	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, textureShader);
+	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(),textureShader);
 
 	const StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, colorShader);
+
+	const StaticSprite groundSprite1(-25, -2, 0 ,50,0.1,50, sandTexture.getID(), textureShader);
+
 
 	Renderer renderer;
 
@@ -47,7 +52,6 @@ int main()
 	auto lastTime = glfwGetTime();
 	auto nbFrames = 0;
 	auto FPSToggle = false;
-
 	auto deltaTime = 0.0f;	// Time between current frame and last frame
 	auto lastFrame = 0.0f; // Time of last frame
 
@@ -57,7 +61,7 @@ int main()
 	double lastX = 0;
 	double lastY = 0;
 	window.getMousePosition(lastX, lastY);
-	auto mouseSensitivity = 0.05f;
+	const auto mouseSensitivity = 0.05f;
 
 	
 //========================================================================
@@ -68,10 +72,11 @@ int main()
 	{
 		window.clear();
 
-		auto currentFrame = glfwGetTime();
+		const auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		float cameraSpeed = 2.5f * deltaTime;
+		// ReSharper disable once CppLocalVariableMayBeConst
+		auto cameraSpeed = 2.5f * deltaTime;
 		glm::vec3 cameraPos = camera.getPos();
 
 
@@ -99,6 +104,7 @@ int main()
 		//========================================================================
 		if (FPSToggle)
 		{
+			// ReSharper disable once CppLocalVariableMayBeConst
 			double currentTime = glfwGetTime();
 			nbFrames++;
 			if (currentTime - lastTime >= 1.0)
@@ -119,6 +125,10 @@ int main()
 		//send objects to renderer and flush all render jobs
 		renderer.submit(&sprite1);
 		renderer.submit(&sprite2);
+		renderer.submit(&groundSprite1);
+		
+		
+		
 		renderer.flush();
 
 		window.update();

@@ -18,5 +18,5 @@ in DATA
 void main()
 {
 	float intensity = 1.0 / length(fs_in.position.xy - light_pos);
-	color = (texture(myTextureSampler, fs_in.UV).rgba + fs_in.color)  * intensity;
+	color = (texture(myTextureSampler, fs_in.UV).rgba + fs_in.color);// *intensity;
 }

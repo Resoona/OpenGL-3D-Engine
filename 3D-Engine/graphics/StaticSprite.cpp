@@ -1,7 +1,7 @@
 ﻿#include "StaticSprite.h"
 
 StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, const glm::vec4& color, Shader& shader)
-	: m_Shader(shader)
+	: m_Shader(shader), m_textureID(0)
 {
 	m_VertexArray = new VertexArray();
 
@@ -13,7 +13,7 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 		0, 0, 0,
 		0, height, 0,
 		width, height, 0,
-		width, 0, 0	
+		width, 0, 0
 	};
 
 	GLfloat colors[] =
@@ -44,8 +44,8 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 	m_IndexBuffer = new IndexBuffer(indices, 6);
 }
 
-StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, Texture* texture, Shader& shader)
-	: m_Shader(shader)
+StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, GLuint textureID, Shader& shader)
+	: m_Shader(shader), m_textureID(textureID)
 {
 	
 	m_position = new glm::vec3(x, y, z);
