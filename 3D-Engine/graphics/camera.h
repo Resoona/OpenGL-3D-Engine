@@ -23,7 +23,7 @@ private:
 	glm::mat4 m_Projection;
 	glm::mat4 m_View;
 
-	glm::mat4 m_MV;
+	glm::mat4 m_VP;
 
 
 public: 
@@ -34,7 +34,7 @@ public:
 	inline glm::vec3 getPos() { return m_pos; };
 	inline glm::vec3 getFront() { return m_front; };
 	inline glm::vec3 getUp() { return m_up; };
-	inline glm::mat4 getMV() { return m_MV; };
+	inline glm::mat4 getVP() { return m_VP; };
 
 	void updatePos(float newx,float newy,float newz, float newpitch, float newyaw);
 	void update();

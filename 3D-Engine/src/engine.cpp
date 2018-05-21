@@ -1,12 +1,9 @@
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-
 #include "../graphics/Texture.h"
 #include "../graphics/StaticSprite.h"
-#include "InputHandler.h"
+#include "../src/InputHandler.h"
+#include "../renderer/Renderer.h"
 
 
 int main()
@@ -35,9 +32,11 @@ int main()
 
 	glm::vec4 colors(1, 1, 1, 1);
 
-	StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, shader);
+	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, shader);
 
-	StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, shader);
+	const StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, shader);
+
+	Renderer renderer;
 
 //========================================================================
 // Global vars for update loop
@@ -65,9 +64,9 @@ int main()
 		window.clear();
 
 		glm::mat4 Model = glm::translate(glm::mat4(), *sprite1.getPosition());
-		shader.setUniformMat4("MVP", camera.getMV() * Model);
+		//shader.setUniformMat4("MVP", camera.getMV() * Model);
 
-		float currentFrame = glfwGetTime();
+		auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float cameraSpeed = 2.5f * deltaTime;
@@ -79,8 +78,8 @@ int main()
 //========================================================================
 // Mouse Controller
 //========================================================================		
-		float xoffset = mouseX - lastX;
-		float yoffset = lastY - mouseY;
+		auto xoffset = mouseX - lastX;
+		auto yoffset = lastY - mouseY;
 		lastX = mouseX;
 		lastY = mouseY;
 		window.getMousePosition(mouseX, mouseY);
@@ -110,21 +109,11 @@ int main()
 //========================================================================
 // Draw Two cubes with same data (but different model coords)
 //========================================================================
-
-
-		sprite1.bindArrays();
-
-		Model = glm::translate(glm::mat4(), *sprite1.getPosition());
-		shader.setUniformMat4("MVP", camera.getMV() * Model);
-
-		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
-
-		sprite2.bindArrays();
-
-		Model = glm::translate(glm::mat4(), *sprite2.getPosition());
-		shader.setUniformMat4("MVP", camera.getMV() * Model);
-
-		glDrawElements(GL_TRIANGLES, sprite2.getIBO()->getCount(), GL_UNSIGNED_SHORT, 0);
+		shader.setUniformMat4("VP", camera.getVP());
+		
+		renderer.submit(&sprite1);
+		renderer.submit(&sprite2);
+		renderer.flush();
 
 		window.update();
 	}

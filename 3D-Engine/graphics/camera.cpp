@@ -57,6 +57,6 @@ void Camera::update()
 		m_pos + m_front,
 		m_up);
 
-	m_MV = m_Projection * m_View;
+	m_VP = m_Projection * m_View;
 }
 
