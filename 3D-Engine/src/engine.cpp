@@ -8,13 +8,13 @@
 
 int main()
 {
-	Window window("3D-Engine", 960, 540);
-	Shader shader("shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader");
-	shader.enable();
+//========================================================================
+// Create Objects (Camera is a singular entity)
+//========================================================================
 
-//========================================================================
-// Create Camera Object (singular entity)
-//========================================================================
+	Window window("3D-Engine", 960, 540);
+	Shader colorShader("shaders/Color.vertexshader", "shaders/Color.fragmentshader");
+	Shader textureShader("shaders/TexturedCube.vertexshader", "shaders/TexturedCube.fragmentshader");
 
 	const int projection_Width = 4;
 	const int projection_Height = 3;
@@ -30,13 +30,15 @@ int main()
 
 	Texture crateTexture("textures/crate.bmp");
 
-	glm::vec4 colors(1, 1, 1, 1);
+	glm::vec4 colors(1, 0.5, 1, 1);
 
-	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, shader);
+	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, &crateTexture, textureShader);
 
-	const StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, shader);
+	const StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, colorShader);
 
 	Renderer renderer;
+
+	InputHandler inputHandler(window);
 
 //========================================================================
 // Global vars for update loop
@@ -57,14 +59,14 @@ int main()
 	window.getMousePosition(lastX, lastY);
 	auto mouseSensitivity = 0.05f;
 
-	InputHandler inputHandler(window);
+	
+//========================================================================
+// While Loop
+//========================================================================
 
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.clear();
-
-		glm::mat4 Model = glm::translate(glm::mat4(), *sprite1.getPosition());
-		//shader.setUniformMat4("MVP", camera.getMV() * Model);
 
 		auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -72,12 +74,13 @@ int main()
 		float cameraSpeed = 2.5f * deltaTime;
 		glm::vec3 cameraPos = camera.getPos();
 
+
 		//Callback - modifies values of cameraPos & FPSToggle
 		inputHandler.listen(camera, cameraPos, cameraSpeed, FPSToggle);
 
-//========================================================================
-// Mouse Controller
-//========================================================================		
+		//========================================================================
+		// Mouse Controller TODO: abstract to inputhandler
+		//========================================================================		
 		auto xoffset = mouseX - lastX;
 		auto yoffset = lastY - mouseY;
 		lastX = mouseX;
@@ -91,9 +94,9 @@ int main()
 
 		//Update all camera values
 		camera.updatePos(cameraPos.x, cameraPos.y, cameraPos.z, cameraPitch, cameraYaw);
-//========================================================================
-// FPS Toggler
-//========================================================================
+		//========================================================================
+		// FPS Toggler
+		//========================================================================
 		if (FPSToggle)
 		{
 			double currentTime = glfwGetTime();
@@ -106,23 +109,25 @@ int main()
 				lastTime += 1.0;
 			}
 		}
-//========================================================================
-// Draw Two cubes with same data (but different model coords)
-//========================================================================
-		shader.setUniformMat4("VP", camera.getVP());
-		
+
+		//Update camera pos for each shader (change this later)
+		textureShader.enable();
+		textureShader.setUniformMat4("VP", camera.getVP());
+		colorShader.enable();
+		colorShader.setUniformMat4("VP", camera.getVP());
+
+		//send objects to renderer and flush all render jobs
 		renderer.submit(&sprite1);
 		renderer.submit(&sprite2);
 		renderer.flush();
 
 		window.update();
 	}
-	shader.~Shader();
+	textureShader.~Shader();
+	colorShader.~Shader();
 	crateTexture.~Texture();
-	
+
 	return 0;
-
-
 }
 
 

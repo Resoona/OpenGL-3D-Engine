@@ -51,7 +51,6 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 	m_position = new glm::vec3(x, y, z);
 	m_size = new glm::vec3(width, height, depth);
 
-	GLuint TextureID = glGetUniformLocation(shader.getShaderID(), "myTextureSampler");
 
 	GLfloat verticies[] = {
 		-width, -height, -depth,
@@ -148,8 +147,6 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 	m_VertexArray->addBuffer(new Buffer(colors, 4, 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(indicies, sizeof(indicies));
-
-	
 }
 
 StaticSprite::~StaticSprite()

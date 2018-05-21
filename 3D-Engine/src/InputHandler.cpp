@@ -3,7 +3,6 @@
 InputHandler::InputHandler(Window& window)
 	: m_Window(window)
 {
-
 }
 
 void InputHandler::setWindow(Window& window)
@@ -70,7 +69,4 @@ void InputHandler::listen(Camera& camera, glm::vec3& cameraPos, float cameraSpee
 	{
 		FPSToggle = false;
 	}
-
-
-
 }

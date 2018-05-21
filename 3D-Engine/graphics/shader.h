@@ -32,6 +32,4 @@ public:
 private:
 	GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path);
 	GLint getUniformLocation(const GLchar* name);
-
-
 };

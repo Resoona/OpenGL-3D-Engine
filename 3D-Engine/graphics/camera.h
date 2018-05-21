@@ -4,7 +4,6 @@
 #include <glm/gtx/transform.hpp>
 
 
-
 class Camera{
 
 
@@ -25,7 +24,6 @@ private:
 
 	glm::mat4 m_VP;
 
-
 public: 
 
 	Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw);
@@ -39,10 +37,4 @@ public:
 	void updatePos(float newx,float newy,float newz, float newpitch, float newyaw);
 	void update();
 	void reset() const;
-
-
-
-
-
-
 };

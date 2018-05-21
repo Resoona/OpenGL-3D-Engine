@@ -14,16 +14,16 @@ void Renderer::flush()
 		sprite->getVAO()->bind();
 		sprite->getIBO()->bind();
 
-		sprite->getShader().setUniformMat4("M", glm::translate(glm::mat4(), *sprite->getPosition()));
+		sprite->getShader().enable();
+		sprite->getShader().setUniformMat4("M", glm::translate(glm::mat4(), *sprite->getPosition()));	
 
 		glDrawElements(GL_TRIANGLES, sprite->getIBO()->getCount(), GL_UNSIGNED_SHORT, nullptr);
+
+		sprite->getShader().disable();
 
 		sprite->getIBO()->unbind();
 		sprite->getVAO()->unbind();
 
 		m_RenderQueue.pop_front();
-
 	}
-	
-
 }

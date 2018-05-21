@@ -27,7 +27,5 @@ public:
 	inline const glm::vec3* getPosition() const { return m_position; }
 	inline const glm::vec3* getSize() const { return m_size; }
 
-
 	void bindArrays();
-
 };

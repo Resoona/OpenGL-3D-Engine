@@ -85,7 +85,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\SimpleVertexShader.vertexshader" />
-    <None Include="shaders\SimpleFragmentShader.fragmentshader" />
+    <None Include="shaders\TexturedCube.fragmentshader" />
+    <None Include="shaders\TexturedCube.vertexshader" />
+    <None Include="shaders\Color.vertexshader" />
+    <None Include="shaders\Color.fragmentshader" />
   </ItemGroup>
 </Project>
