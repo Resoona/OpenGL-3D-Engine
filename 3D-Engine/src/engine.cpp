@@ -4,6 +4,8 @@
 #include "../graphics/StaticSprite.h"
 #include "../src/InputHandler.h"
 #include "../renderer/Renderer.h"
+#include "../graphics/objloader.hpp"
+#include "../graphics/buffers/vboindexer.hpp"
 
 
 int main()
@@ -33,13 +35,34 @@ int main()
 
 	const glm::vec4 colors(1, 0.5, 1, 1);
 	glm::vec4 green(0, 1, 0, 1);
+	
+	const glm::vec4 colorSkyBlue(0.4863, 0.6798, 1.0000,1.0);
+	StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(),textureShader);
 
-	const StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(),textureShader);
+	StaticSprite sprite2(-4, -1, -1, 2, 2, colors, colorShader);
 
-	const StaticSprite sprite2(-4, -1, -1, 2, 2, 2, colors, colorShader);
+	StaticSprite groundSprite1(-25, -2, 25 ,50,0.1,50, sandTexture.getID(), textureShader);
 
-	const StaticSprite groundSprite1(-25, -2, 0 ,50,0.1,50, sandTexture.getID(), textureShader);
+	StaticSprite skyBox(-50, -50, -50, 100, 100, 100, colorSkyBlue, colorShader);
 
+	//std::vector<glm::vec3> vertices;
+	//std::vector<glm::vec2> uvs;
+	//std::vector<glm::vec3> normals;
+
+	
+	//Models currently a WIP.
+	//bool res = loadOBJ("objects/eb_house_plant_01.obj", vertices, uvs, normals);
+	//bool res = loadOBJ("objects/cube.obj", vertices, uvs, normals);
+
+
+	//std::vector<unsigned short> indices;
+	//std::vector<glm::vec3> indexed_vertices;
+	//std::vector<glm::vec2> indexed_uvs;
+	//std::vector<glm::vec3> indexed_normals;
+	//indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
+
+	//std::cout << indexed_vertices.size() << std::endl;
+	//const StaticSprite sprite3(3, 3, 3, indexed_vertices, indexed_uvs, indexed_normals, indices, crateTexture.getID(), textureShader);
 
 	Renderer renderer;
 
@@ -126,6 +149,7 @@ int main()
 		renderer.submit(&sprite1);
 		renderer.submit(&sprite2);
 		renderer.submit(&groundSprite1);
+		renderer.submit(&skyBox);
 		
 		
 		

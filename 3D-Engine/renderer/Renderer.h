@@ -6,9 +6,9 @@
 class Renderer
 {
 private:
-	std::deque<const StaticSprite*> m_RenderQueue;
+	std::deque<StaticSprite*> m_RenderQueue;
 
 public:
-	void submit(const StaticSprite* sprite);
+	void submit(StaticSprite* sprite);
 	void flush();
 };

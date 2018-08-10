@@ -1,6 +1,6 @@
 ﻿#include "Renderer.h"
 
-void Renderer::submit(const StaticSprite* sprite)
+void Renderer::submit(StaticSprite* sprite)
 {
 	m_RenderQueue.push_back(sprite);
 }
@@ -9,7 +9,7 @@ void Renderer::flush()
 {
 	while (!m_RenderQueue.empty())
 	{
-		const StaticSprite* sprite = m_RenderQueue.front();
+		StaticSprite* sprite = m_RenderQueue.front();
 
 		sprite->getVAO()->bind();
 		sprite->getIBO()->bind();

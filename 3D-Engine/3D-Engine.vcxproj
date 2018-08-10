@@ -129,8 +129,10 @@
   <ItemGroup>
     <ClCompile Include="graphics\buffers\Buffer.cpp" />
     <ClCompile Include="graphics\buffers\IndexBuffer.cpp" />
+    <ClCompile Include="graphics\buffers\vboindexer.cpp" />
     <ClCompile Include="graphics\buffers\VertexArray.cpp" />
     <ClCompile Include="graphics\Camera.cpp" />
+    <ClCompile Include="graphics\objloader.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\StaticSprite.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
@@ -142,8 +144,10 @@
   <ItemGroup>
     <ClInclude Include="graphics\buffers\Buffer.h" />
     <ClInclude Include="graphics\buffers\IndexBuffer.h" />
+    <ClInclude Include="graphics\buffers\vboindexer.hpp" />
     <ClInclude Include="graphics\buffers\VertexArray.h" />
     <ClInclude Include="graphics\Camera.h" />
+    <ClInclude Include="graphics\objloader.hpp" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />

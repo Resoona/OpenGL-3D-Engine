@@ -10,6 +10,7 @@ private:
 public:
 	Buffer(GLfloat* data, GLsizei count, GLuint componentCount);
 
+
 	void bind() const;
 	void unbind() const;
 

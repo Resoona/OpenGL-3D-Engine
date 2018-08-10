@@ -18,7 +18,9 @@ private:
 
 public:
 	StaticSprite(float x, float y, float z, float width, float height, float depth, const glm::vec4& color, Shader& shader);
+	StaticSprite(float x, float y, float z, float width, float height, const glm::vec4& color, Shader& shader);
 	StaticSprite(float x, float y, float z, float width, float height, float depth, GLuint textureID, Shader& shader);
+	StaticSprite(float x, float y, float z, std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<GLushort> indicies, GLuint textureID, Shader& shader);
 	~StaticSprite();
 
 	inline const VertexArray* getVAO() const { return m_VertexArray; }

@@ -52,7 +52,7 @@ void Camera::updatePos(float newx, float newy, float newz, float newpitch, float
 
 void Camera::update()
 {
-	m_Projection = glm::perspective(glm::radians(m_fov), (float)m_projWidth / (float)m_projHeight, 0.1f, 100.0f);
+	m_Projection = glm::perspective(glm::radians(m_fov), (float)m_projWidth / (float)m_projHeight, 0.1f, 1000.0f);
 	m_View = glm::lookAt(m_pos,
 		m_pos + m_front,
 		m_up);
