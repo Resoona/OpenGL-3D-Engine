@@ -36,3 +36,8 @@ void VertexArray::unbind() const
 {
 	glBindVertexArray(0);
 }
+
+void VertexArray::Draw(GLuint count) const
+{
+	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, nullptr);
+}

@@ -17,4 +17,6 @@ public:
 	void addBuffer(Buffer* buffer, GLuint index);
 	void bind() const;
 	void unbind() const;
+	void VertexArray::Draw(GLuint count) const;
+
 };
