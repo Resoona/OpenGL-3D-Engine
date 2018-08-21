@@ -26,6 +26,19 @@ void VertexArray::addBuffer(Buffer* buffer, GLuint index)
 	unbind();
 }
 
+void VertexArray::PushBuffer(Buffer* buffer)
+{
+
+	m_Buffers.push_back(buffer);
+
+	const std::vector<BufferLayoutType>& layout = buffer->layout.GetLayout();
+	for (uint i = 0; i < layout.size(); i++)
+	{
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i, layout[i].count, layout[i].type, (uint)layout[i].normalized, buffer->layout.GetStride(), (const GLvoid*)layout[i].offset);
+	}
+}
+
 
 void VertexArray::bind() const
 {

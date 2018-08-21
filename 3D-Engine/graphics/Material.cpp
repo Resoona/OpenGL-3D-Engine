@@ -18,6 +18,11 @@ void Material::Bind() const
 	
 }
 
+void Material::UnBind() const
+{
+	m_Shader->disable();
+}
+
 MaterialInstance::MaterialInstance(Material* material)
 	: m_Material(material)
 {

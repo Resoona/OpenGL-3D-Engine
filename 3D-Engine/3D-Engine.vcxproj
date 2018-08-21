@@ -128,37 +128,52 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="graphics\buffers\Buffer.cpp" />
+    <ClCompile Include="graphics\buffers\BufferLayout.cpp" />
     <ClCompile Include="graphics\buffers\IndexBuffer.cpp" />
     <ClCompile Include="graphics\buffers\vboindexer.cpp" />
     <ClCompile Include="graphics\buffers\VertexArray.cpp" />
     <ClCompile Include="graphics\Camera.cpp" />
+    <ClCompile Include="graphics\Material.cpp" />
+    <ClCompile Include="graphics\Mesh.cpp" />
+    <ClCompile Include="graphics\MeshCreator.cpp" />
     <ClCompile Include="graphics\objloader.cpp" />
+    <ClCompile Include="graphics\Scene.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\StaticSprite.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
+    <ClCompile Include="renderer\ForwardRenderer.cpp" />
     <ClCompile Include="renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\buffers\Buffer.h" />
+    <ClInclude Include="graphics\buffers\BufferLayout.h" />
     <ClInclude Include="graphics\buffers\IndexBuffer.h" />
     <ClInclude Include="graphics\buffers\vboindexer.hpp" />
     <ClInclude Include="graphics\buffers\VertexArray.h" />
     <ClInclude Include="graphics\Camera.h" />
+    <ClInclude Include="graphics\Material.h" />
+    <ClInclude Include="graphics\Mesh.h" />
+    <ClInclude Include="graphics\MeshCreator.h" />
     <ClInclude Include="graphics\objloader.hpp" />
+    <ClInclude Include="graphics\Scene.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />
+    <ClInclude Include="renderer\ForwardRenderer.h" />
     <ClInclude Include="renderer\Renderer.h" />
+    <ClInclude Include="renderer\Renderer3D.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\InputHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Color.fragmentshader" />
     <None Include="shaders\Color.vertexshader" />
+    <None Include="shaders\scene.fragmentshader" />
+    <None Include="shaders\scene.vertexshader" />
     <None Include="shaders\TexturedCube.fragmentshader" />
     <None Include="shaders\TexturedCube.vertexshader" />
   </ItemGroup>

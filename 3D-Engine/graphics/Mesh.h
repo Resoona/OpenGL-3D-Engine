@@ -3,7 +3,8 @@
 #include "buffers/IndexBuffer.h"
 #include "Material.h"
 
-class Renderer;
+class Renderer3D;
+
 
 struct Vertex
 {
@@ -25,5 +26,5 @@ public:
 
 	inline MaterialInstance* GetMaterialInstance() const { return m_MaterialInstance; }
 
-	void Render(Renderer& renderer);
+	void Render(Renderer3D& renderer);
 };

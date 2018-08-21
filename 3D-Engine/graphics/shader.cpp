@@ -110,12 +110,12 @@ GLuint Shader::LoadShaders(const char * vertex_file_path, const char * fragment_
 	return ProgramID;
 }
 
-GLint Shader::getUniformLocation(const GLchar* name)
+GLint Shader::getUniformLocation(const std::string name)
 {
-	return glGetUniformLocation(m_ShaderID, name);
+	return glGetUniformLocation(m_ShaderID, name.c_str());
 }
 
-void Shader::setUniformMat4(const GLchar* name, const glm::mat4& matrix)
+void Shader::setUniformMat4(const std::string name, const glm::mat4& matrix)
 {
 	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
 }

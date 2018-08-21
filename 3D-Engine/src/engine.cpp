@@ -6,6 +6,9 @@
 #include "../renderer/Renderer.h"
 #include "../graphics/objloader.hpp"
 #include "../graphics/buffers/vboindexer.hpp"
+#include "../graphics/MeshCreator.h"
+#include "../graphics/Scene.h"
+#include "../renderer/ForwardRenderer.h"
 
 
 int main()
@@ -17,6 +20,18 @@ int main()
 	Window window("3D-Engine", 960, 540);
 	Shader colorShader("shaders/Color.vertexshader", "shaders/Color.fragmentshader");
 	Shader textureShader("shaders/TexturedCube.vertexshader", "shaders/TexturedCube.fragmentshader");
+	
+	Renderer3D* renderertest = new ForwardRenderer();
+	Material* material1 = new Material(&Shader("shaders/scene.vertexshader","shaders/scene.fragmentshader"));
+	Mesh* cubetest = CreateCube(5.0f, new MaterialInstance(material1));
+
+	Scene* scene1 = new Scene();
+
+	scene1->Add(cubetest);
+
+	material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
+	material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
+	material1->SetUniform("ml_matrix", glm::rotate(glm::mat4(), 45.0f, glm::vec3(0, 1, 0)));
 
 	const int projection_Width = 4;
 	const int projection_Height = 3;
@@ -95,6 +110,9 @@ int main()
 	{
 		window.clear();
 
+		scene1->Render(*renderertest);
+		//renderertest->Present();
+
 		const auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -144,6 +162,7 @@ int main()
 		textureShader.setUniformMat4("VP", camera.getVP());
 		colorShader.enable();
 		colorShader.setUniformMat4("VP", camera.getVP());
+		material1->SetUniform("vw_matrix", camera.getVP());
 
 		//send objects to renderer and flush all render jobs
 		renderer.submit(&sprite1);

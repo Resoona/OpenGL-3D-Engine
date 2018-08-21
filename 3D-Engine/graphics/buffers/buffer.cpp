@@ -13,6 +13,17 @@ Buffer::Buffer(GLfloat* data, GLsizei count, GLuint componentCount)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+Buffer::Buffer(GLuint target, GLuint usage)
+	:target(target), usage(usage)
+{
+	glGenBuffers(1, &m_BufferID);
+}
+
+void Buffer::SetData(GLuint size, const void* data)
+{
+	glBufferData(target, size, data, usage);
+}
+
 void Buffer::bind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);

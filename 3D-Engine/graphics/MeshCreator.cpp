@@ -26,5 +26,33 @@ Mesh* CreateCube(float size, MaterialInstance* material)
 	data[6].normal = vec3(1.0f, 1.0f, -1.0f);
 	data[7].normal = vec3(-1.0f, 1.0f, -1.0f);
 
+	Buffer* buffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+	buffer->bind();
+	buffer->SetData(8 * sizeof(Vertex), data);
+
+	buffer->layout.Push<vec3>("position");
+	buffer->layout.Push<vec3>("normal");
+	buffer->layout.Push<vec2>("uv");
+
+	VertexArray* va = new VertexArray();
+	va->bind();
+	va->PushBuffer(buffer);
+
+
+	//m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
+	
+	uint* indices = new uint[36]
+	{
+		0, 1, 2, 2, 3, 0,
+		3, 2, 6, 6, 7, 3,
+		7, 6, 5, 5, 4, 7,
+		4, 0, 3, 3, 7, 4,
+		0, 1, 5, 5, 4, 0,
+		1, 5, 6, 6, 2, 1
+	};
+
+	IndexBuffer* ib = new IndexBuffer(indices, 36);
+	return new Mesh(va, ib, material);
+
 	
 }

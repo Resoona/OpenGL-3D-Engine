@@ -14,7 +14,7 @@ Mesh::~Mesh()
 	delete m_MaterialInstance;
 }
 
-void Mesh::Render(Renderer& renderer)
+void Mesh::Render(Renderer3D& renderer)
 {
 	m_MaterialInstance->GetMaterial()->Bind();
 
