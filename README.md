@@ -1,9 +1,9 @@
 # OpenGL-3D-Engine
 A 3D engine using OpenGL - In development
 
-My summer project for 2018.
+This is my first attempt at building a working engine. Expect many bad practices as I figure out how to display anything on the screen.
 
-Overall goal for this project is to randomly generate a terrain and create water physics.
+Overall goal for this project is to generate terrain and object model loading. Post Process Effects to be added afterwards.
 
 Feel free to follow my progress on my website as I post updates to my application!
 
