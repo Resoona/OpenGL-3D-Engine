@@ -4,11 +4,10 @@
 #include "../graphics/StaticSprite.h"
 #include "../src/InputHandler.h"
 #include "../renderer/Renderer.h"
-#include "../graphics/objloader.hpp"
-#include "../graphics/buffers/vboindexer.hpp"
 #include "../graphics/MeshCreator.h"
 #include "../graphics/Scene.h"
 #include "../renderer/ForwardRenderer.h"
+#include "../graphics/Model.h"
 
 
 int main()
@@ -33,8 +32,11 @@ int main()
 	Mesh* cubetest = CreateCube(3.0f, new MaterialInstance(material1));
 	Scene* scene1 = new Scene();
 
-	scene1->Add(cubetest);
-	scene1->Add(plane);
+	Model* houseplant = new Model("objects/eb_house_plant_01.obj", new MaterialInstance(material1));
+
+	//scene1->Add(cubetest);
+	//scene1->Add(plane);
+	scene1->Add(houseplant->GetMesh());
 	
 	const int projection_Width = 4;
 	const int projection_Height = 3;
@@ -47,11 +49,17 @@ int main()
 	float cameraYaw = -90.0f;
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
-	material1->Bind();
-	material1->SetUniform("vw_matrix", camera.getVP());
+
+	
 	//material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
-	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
-	material1->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10)));
+	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
+	glm::mat4 modelMatrix(1.0);
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(-6, -2, 0));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3, 0.3, 0.3));
+
+	material1->Bind();
+	material1->SetUniform("ml_matrix", modelMatrix);
+	material1->SetUniform("vw_matrix", camera.getVP());
 
 	material2->Bind();
 	material2->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 5, 0)));
@@ -73,25 +81,6 @@ int main()
 	StaticSprite groundSprite1(-25, -2, 25 ,50,0.1,50, sandTexture.getID(), textureShader);
 
 	StaticSprite skyBox(-50, -50, -50, 100, 100, 100, colorSkyBlue, colorShader);
-
-	//std::vector<glm::vec3> vertices;
-	//std::vector<glm::vec2> uvs;
-	//std::vector<glm::vec3> normals;
-
-	
-	//Models currently a WIP.
-	//bool res = loadOBJ("objects/eb_house_plant_01.obj", vertices, uvs, normals);
-	//bool res = loadOBJ("objects/cube.obj", vertices, uvs, normals);
-
-
-	//std::vector<unsigned short> indices;
-	//std::vector<glm::vec3> indexed_vertices;
-	//std::vector<glm::vec2> indexed_uvs;
-	//std::vector<glm::vec3> indexed_normals;
-	//indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
-
-	//std::cout << indexed_vertices.size() << std::endl;
-	//const StaticSprite sprite3(3, 3, 3, indexed_vertices, indexed_uvs, indexed_normals, indices, crateTexture.getID(), textureShader);
 
 	Renderer renderer;
 

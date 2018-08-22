@@ -2,6 +2,7 @@
 #include "buffers/VertexArray.h"
 #include "buffers/IndexBuffer.h"
 #include "Material.h"
+#include "../renderer/IRenderable.h"
 
 class Renderer3D;
 
@@ -13,7 +14,7 @@ struct Vertex
 	glm::vec2 uv;
 };
 
-class Mesh
+class Mesh : public IRenderable
 {
 private:
 	VertexArray * m_VertexArray;
@@ -24,7 +25,8 @@ public:
 
 	~Mesh();
 
+	inline void SetMaterial(MaterialInstance* materialInstance) { m_MaterialInstance = materialInstance; }
 	inline MaterialInstance* GetMaterialInstance() const { return m_MaterialInstance; }
 
-	void Render(Renderer3D& renderer);
+	void Render(Renderer3D& renderer) override;
 };

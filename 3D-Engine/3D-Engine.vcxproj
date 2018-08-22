@@ -136,7 +136,7 @@
     <ClCompile Include="graphics\Material.cpp" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\MeshCreator.cpp" />
-    <ClCompile Include="graphics\objloader.cpp" />
+    <ClCompile Include="graphics\Model.cpp" />
     <ClCompile Include="graphics\Scene.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\StaticSprite.cpp" />
@@ -157,17 +157,20 @@
     <ClInclude Include="graphics\Material.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\MeshCreator.h" />
-    <ClInclude Include="graphics\objloader.hpp" />
+    <ClInclude Include="graphics\Model.h" />
     <ClInclude Include="graphics\Scene.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />
     <ClInclude Include="renderer\ForwardRenderer.h" />
+    <ClInclude Include="renderer\IRenderable.h" />
     <ClInclude Include="renderer\Renderer.h" />
     <ClInclude Include="renderer\Renderer3D.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\InputHandler.h" />
+    <ClInclude Include="utils\FileUtils.h" />
+    <ClInclude Include="utils\StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\Color.fragmentshader" />

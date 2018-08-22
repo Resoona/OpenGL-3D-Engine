@@ -9,7 +9,7 @@ Feel free to follow my progress on my website as I post updates to my applicatio
 
 http://drewcornfield.com/
 
-![alt text](https://i.imgur.com/pXYXxSH.png)
+![alt text](https://i.imgur.com/kQWbr6B.png)
 
 Compile/Linker instructions:
 
