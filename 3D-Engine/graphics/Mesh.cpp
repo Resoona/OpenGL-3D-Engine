@@ -16,7 +16,7 @@ Mesh::~Mesh()
 
 void Mesh::Render(Renderer3D& renderer)
 {
-	m_MaterialInstance->GetMaterial()->Bind();
+	m_MaterialInstance->Bind();
 
 	m_VertexArray->bind();
 	m_IndexBuffer->bind();
@@ -24,6 +24,6 @@ void Mesh::Render(Renderer3D& renderer)
 	m_IndexBuffer->unbind();
 	m_VertexArray->unbind();
 
-	m_MaterialInstance->GetMaterial()->UnBind();
+	m_MaterialInstance->Unbind();
 
 }

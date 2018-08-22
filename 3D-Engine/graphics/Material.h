@@ -69,7 +69,7 @@ public:
 		int index = GetUniformDeclarationIndex(name);
 		if (index == -1)
 		{
-			std::cout << "Could not find uniform '" << name << std::endl;
+			std::cout << "Could not find uniform " << name << std::endl;
 			return;
 		}
 		ShaderUniformDeclaration* uniform = m_Material->m_Shader->GetUniformDeclarations()[index];

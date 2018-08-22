@@ -226,7 +226,8 @@ GLint Shader::GetUniformLocation(const String& name)
 	GLint loc = glGetUniformLocation(m_ShaderID, name.c_str());
 	if (loc == -1)
 	{
-		std::cout << "cant find uniform in "<<  m_Name << " shader:" << name << std::endl;
+		std::cout << "cant find uniform in "<<  m_Name << " shader:" << name << " (Potentially Unused)" << std::endl;
+		
 	}
 	
 	return loc;

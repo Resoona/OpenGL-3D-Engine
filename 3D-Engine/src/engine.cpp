@@ -53,8 +53,12 @@ int main()
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 
 	
-	//material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
+	//material2->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
 	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
+	std::string name = "colour";
+	GLint loc = glGetUniformLocation(colorShader->getShaderID(), name.c_str());
+	if (loc == -1) std::cout << "cant find" << std::endl;
+
 	glm::mat4 modelMatrix(1.0);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(-6, -2, 0));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3, 0.3, 0.3));
@@ -62,7 +66,7 @@ int main()
 	m_PlantMaterial->SetUniform("ml_matrix", modelMatrix);
 	m_PlantMaterial->SetUniform("vw_matrix", camera.getVP());
 
-	m_CubeMaterial->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(-5, 5, 0)));
+	m_CubeMaterial->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(6, 3, 0)));
 	m_CubeMaterial->SetUniform("vw_matrix", camera.getVP());
 
 	
@@ -114,8 +118,7 @@ int main()
 		window.clear();
 		
 
-		scene1->Render(*m_Renderer);
-		m_Renderer->Present();
+		
 
 		const auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -167,13 +170,18 @@ int main()
 		textureShader->SetUniformMat4("VP", camera.getVP());
 		colorShader->Bind();
 		colorShader->SetUniformMat4("VP", camera.getVP());
-		material1->Bind();
-		material1->SetUniform("vw_matrix", camera.getVP());
-		material2->Bind();
-		material2->SetUniform("vw_matrix", camera.getVP());
+
+		//Camera returns View and Projection matrix multiplied together, not included in shader
+		m_CubeMaterial->SetUniform("vw_matrix", camera.getVP());
+		m_PlantMaterial->SetUniform("vw_matrix", camera.getVP());
+
+		
 
 		//send objects to renderer and flush all render jobs
-		
+
+		scene1->Render(*m_Renderer);
+		m_Renderer->Present();
+
 		renderer.submit(&sprite1);
 		renderer.submit(&sprite2);
 		renderer.submit(&groundSprite1);

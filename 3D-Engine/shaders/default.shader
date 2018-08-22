@@ -26,6 +26,7 @@ vec4 color;
 
 void main()
 {
+	
 	gl_Position = vw_matrix * ml_matrix * position;
 	vs_out.position = ml_matrix * position;
 	vs_out.uv = uv;
