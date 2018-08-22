@@ -23,20 +23,19 @@ int main()
 	
 	Renderer3D* renderertest = new ForwardRenderer();
 	Material* material1 = new Material(new Shader("shaders/scene.vertexshader", "shaders/scene.fragmentshader"));
-	Mesh* cubetest = CreateCube(3.0f, new MaterialInstance(material1));
+	Material* material2 = new Material(new Shader("shaders/default.vertexshader", "shaders/default.fragmentshader"));
 	
+
+	VertexArray* va = CreateQuad(0, 0, 10, 10);
+	IndexBuffer* ib = new IndexBuffer(new uint[6]{ 0,1,2,2,3,0 }, 6);
+
+	Mesh* plane = new Mesh(va, ib, new MaterialInstance(material2));
+	Mesh* cubetest = CreateCube(3.0f, new MaterialInstance(material1));
 	Scene* scene1 = new Scene();
 
 	scene1->Add(cubetest);
-
-	material1->Bind();
-
-	//material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
-	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
-	material1->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10)));
-
+	scene1->Add(plane);
 	
-
 	const int projection_Width = 4;
 	const int projection_Height = 3;
 	const float FOV = 45.0f;
@@ -48,7 +47,17 @@ int main()
 	float cameraYaw = -90.0f;
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
+	material1->Bind();
 	material1->SetUniform("vw_matrix", camera.getVP());
+	//material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
+	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
+	material1->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10)));
+
+	material2->Bind();
+	material2->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 5, 0)));
+	material2->SetUniform("vw_matrix", camera.getVP());
+
+	
 
 	Texture crateTexture("textures/crate.bmp");
 	Texture sandTexture("textures/Sand_Texture.bmp");
@@ -171,6 +180,8 @@ int main()
 		colorShader.setUniformMat4("VP", camera.getVP());
 		material1->Bind();
 		material1->SetUniform("vw_matrix", camera.getVP());
+		material2->Bind();
+		material2->SetUniform("vw_matrix", camera.getVP());
 
 		//send objects to renderer and flush all render jobs
 		

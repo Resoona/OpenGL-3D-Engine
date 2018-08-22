@@ -53,5 +53,5 @@ void VertexArray::unbind() const
 
 void VertexArray::Draw(GLuint count) const
 {
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, nullptr);
+	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }

@@ -142,5 +142,7 @@
     <None Include="shaders\Color.fragmentshader" />
     <None Include="shaders\scene.fragmentshader" />
     <None Include="shaders\scene.vertexshader" />
+    <None Include="shaders\default.fragmentshader" />
+    <None Include="shaders\default.vertexshader" />
   </ItemGroup>
 </Project>

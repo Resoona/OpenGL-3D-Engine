@@ -172,6 +172,8 @@
   <ItemGroup>
     <None Include="shaders\Color.fragmentshader" />
     <None Include="shaders\Color.vertexshader" />
+    <None Include="shaders\default.fragmentshader" />
+    <None Include="shaders\default.vertexshader" />
     <None Include="shaders\scene.fragmentshader" />
     <None Include="shaders\scene.vertexshader" />
     <None Include="shaders\TexturedCube.fragmentshader" />

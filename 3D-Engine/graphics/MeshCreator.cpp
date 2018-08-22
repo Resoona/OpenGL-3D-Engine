@@ -1,5 +1,55 @@
 ﻿#include "MeshCreator.h"
 
+struct VertexData
+{
+	glm::vec3 vertex;
+	glm::vec2 uv;
+	glm::vec2 mask_uv;
+	float tid;
+	float mid;
+	unsigned int color;
+};
+
+VertexArray* CreateQuad(float x, float y, float width, float height)
+{
+	using namespace glm;
+
+	VertexData data[4];
+
+	data[0].vertex = vec3(x, y, 0);
+	data[0].uv = vec2(0, 1);
+
+	data[1].vertex = vec3(x, y + height, 0);
+	data[1].uv = vec2(0, 0);
+
+	data[2].vertex = vec3(x + width, y + height, 0);
+	data[2].uv = vec2(1, 0);
+
+	data[3].vertex = vec3(x + width, y, 0);
+	data[3].uv = vec2(1, 1);
+
+	Buffer* buffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+	buffer->bind();
+	buffer->SetData(sizeof(VertexData) * 4, data);
+
+	buffer->layout.Push<vec3>("position");
+	buffer->layout.Push<vec2>("uv");
+	buffer->layout.Push<vec2>("mask_uv");
+	buffer->layout.Push<float>("tid");
+	buffer->layout.Push<float>("mid");
+	buffer->layout.Push<GLbyte>("color", 4, true);
+
+	VertexArray* result = new VertexArray();
+	result->bind();
+	result->PushBuffer(buffer);
+
+	return result;
+}
+
+VertexArray* CreateQuad(const glm::vec2& position, const glm::vec2& size)
+{
+	return CreateQuad(position.x, position.y, size.x, size.y);
+}
 
 
 Mesh* CreateCube(float size, MaterialInstance* material)
