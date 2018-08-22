@@ -72,6 +72,9 @@
     <ClCompile Include="graphics\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\shaders\ShaderUniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\Camera.h">
@@ -143,15 +146,17 @@
     <ClInclude Include="utils\FileUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\shaders\ShaderUniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="typedeclaration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\TexturedCube.fragmentshader" />
-    <None Include="shaders\TexturedCube.vertexshader" />
-    <None Include="shaders\Color.vertexshader" />
-    <None Include="shaders\Color.fragmentshader" />
-    <None Include="shaders\scene.fragmentshader" />
-    <None Include="shaders\scene.vertexshader" />
-    <None Include="shaders\default.fragmentshader" />
-    <None Include="shaders\default.vertexshader" />
+    <None Include="shaders\Color.shader" />
+    <None Include="shaders\default.shader" />
+    <None Include="shaders\scene.shader" />
+    <None Include="shaders\TexturedCube.shader" />
   </ItemGroup>
 </Project>

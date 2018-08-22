@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\dev\C++\Dependencies\glm;C:\dev\C++\Dependencies\GLEW\include;C:\dev\C++\Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\dev\C++\Dependencies\GLEW\lib\Release\Win32;C:\dev\C++\Dependencies\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -102,6 +103,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\dev\C++\Dependencies\glm;C:\dev\C++\Dependencies\GLEW\include;C:\dev\C++\Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +141,7 @@
     <ClCompile Include="graphics\Model.cpp" />
     <ClCompile Include="graphics\Scene.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
+    <ClCompile Include="graphics\shaders\ShaderUniform.cpp" />
     <ClCompile Include="graphics\StaticSprite.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
@@ -160,6 +163,7 @@
     <ClInclude Include="graphics\Model.h" />
     <ClInclude Include="graphics\Scene.h" />
     <ClInclude Include="graphics\Shader.h" />
+    <ClInclude Include="graphics\shaders\ShaderUniform.h" />
     <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />
@@ -169,18 +173,15 @@
     <ClInclude Include="renderer\Renderer3D.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\InputHandler.h" />
+    <ClInclude Include="typedeclaration.h" />
     <ClInclude Include="utils\FileUtils.h" />
     <ClInclude Include="utils\StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\Color.fragmentshader" />
-    <None Include="shaders\Color.vertexshader" />
-    <None Include="shaders\default.fragmentshader" />
-    <None Include="shaders\default.vertexshader" />
-    <None Include="shaders\scene.fragmentshader" />
-    <None Include="shaders\scene.vertexshader" />
-    <None Include="shaders\TexturedCube.fragmentshader" />
-    <None Include="shaders\TexturedCube.vertexshader" />
+    <None Include="shaders\Color.shader" />
+    <None Include="shaders\default.shader" />
+    <None Include="shaders\scene.shader" />
+    <None Include="shaders\TexturedCube.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,4 @@
+#shader vertex
 
 #version 330 core
 
@@ -19,10 +20,32 @@ vec3 color;
 
 void main()
 {
-	
+
 	gl_Position = vw_matrix * ml_matrix * position;
 	vs_out.position = ml_matrix * position;
 	vs_out.normal = normal;
 	vs_out.uv = uv;
 	vs_out.color = vec3(normal * 0.5 + 0.5);
+};
+
+
+#shader fragment
+#version 330 core
+
+layout(location = 0) out vec4 color;
+
+in DATA
+{
+	vec4 position;
+vec3 normal;
+vec2 uv;
+vec3 color;
+} fs_in;
+
+uniform vec4 u_Color;
+
+void main()
+{
+	vec3 n = fs_in.normal / 2.0 + 0.5;
+	color = vec4(fs_in.color, 1.0);
 };

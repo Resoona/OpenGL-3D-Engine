@@ -1,14 +1,4 @@
-#include <iostream>
-
-#include "../graphics/Texture.h"
-#include "../graphics/StaticSprite.h"
-#include "../src/InputHandler.h"
-#include "../renderer/Renderer.h"
-#include "../graphics/MeshCreator.h"
-#include "../graphics/Scene.h"
-#include "../renderer/ForwardRenderer.h"
-#include "../graphics/Model.h"
-
+#include "Engine.h"
 
 int main()
 {
@@ -17,24 +7,36 @@ int main()
 //========================================================================
 
 	Window window("3D-Engine", 960, 540);
-	Shader colorShader("shaders/Color.vertexshader", "shaders/Color.fragmentshader");
-	Shader textureShader("shaders/TexturedCube.vertexshader", "shaders/TexturedCube.fragmentshader");
+	Shader* colorShader = Shader::FromFile("Color", "shaders/Color.shader");
+	Shader* textureShader = Shader::FromFile("Textured", "shaders/TexturedCube.shader");
+
 	
-	Renderer3D* renderertest = new ForwardRenderer();
-	Material* material1 = new Material(new Shader("shaders/scene.vertexshader", "shaders/scene.fragmentshader"));
-	Material* material2 = new Material(new Shader("shaders/default.vertexshader", "shaders/default.fragmentshader"));
+
+	
+	m_Renderer = new ForwardRenderer();
+	Material* material1 = new Material(Shader::FromFile("Scene", "shaders/scene.shader"));
+	Material* material2 = new Material(Shader::FromFile("Default", "shaders/default.shader"));
+	Material* material3 = new Material(Shader::FromFile("Color", "shaders/Color.shader"));
+	Material* material4 = new Material(Shader::FromFile("Textured", "shaders/TexturedCube.shader"));
 	
 
 	VertexArray* va = CreateQuad(0, 0, 10, 10);
 	IndexBuffer* ib = new IndexBuffer(new uint[6]{ 0,1,2,2,3,0 }, 6);
 
-	Mesh* plane = new Mesh(va, ib, new MaterialInstance(material2));
-	Mesh* cubetest = CreateCube(3.0f, new MaterialInstance(material1));
+	m_CubeMaterial = new MaterialInstance(material1);
+	m_PlantMaterial = new MaterialInstance(material1);
+	m_DefaultMaterial = new MaterialInstance(material2);
+
+	//Mesh* plane = new Mesh(va, ib,	m_DefaultMaterial);
+	//Mesh* cubetest = CreateCube(3.0f, m_CubeMaterial);
+	Model* cube = new Model("objects/cube.obj", m_CubeMaterial);
+	Model* houseplant = new Model("objects/eb_house_plant_01.obj", m_PlantMaterial);
+
 	Scene* scene1 = new Scene();
 
-	Model* houseplant = new Model("objects/eb_house_plant_01.obj", new MaterialInstance(material1));
+	
 
-	//scene1->Add(cubetest);
+	scene1->Add(cube->GetMesh());
 	//scene1->Add(plane);
 	scene1->Add(houseplant->GetMesh());
 	
@@ -57,13 +59,11 @@ int main()
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(-6, -2, 0));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3, 0.3, 0.3));
 
-	material1->Bind();
-	material1->SetUniform("ml_matrix", modelMatrix);
-	material1->SetUniform("vw_matrix", camera.getVP());
+	m_PlantMaterial->SetUniform("ml_matrix", modelMatrix);
+	m_PlantMaterial->SetUniform("vw_matrix", camera.getVP());
 
-	material2->Bind();
-	material2->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 5, 0)));
-	material2->SetUniform("vw_matrix", camera.getVP());
+	m_CubeMaterial->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(-5, 5, 0)));
+	m_CubeMaterial->SetUniform("vw_matrix", camera.getVP());
 
 	
 
@@ -74,13 +74,13 @@ int main()
 	glm::vec4 green(0, 1, 0, 1);
 	
 	const glm::vec4 colorSkyBlue(0.4863, 0.6798, 1.0000,1.0);
-	StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(),textureShader);
+	StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(),*textureShader);
 
-	StaticSprite sprite2(-4, -1, -1, 2, 2, colors, colorShader);
+	StaticSprite sprite2(-4, -1, -1, 2, 2, colors, *colorShader);
 
-	StaticSprite groundSprite1(-25, -2, 25 ,50,0.1,50, sandTexture.getID(), textureShader);
+	StaticSprite groundSprite1(-25, -2, 25 ,50,0.1,50, sandTexture.getID(), *textureShader);
 
-	StaticSprite skyBox(-50, -50, -50, 100, 100, 100, colorSkyBlue, colorShader);
+	StaticSprite skyBox(-50, -50, -50, 100, 100, 100, colorSkyBlue, *colorShader);
 
 	Renderer renderer;
 
@@ -114,8 +114,8 @@ int main()
 		window.clear();
 		
 
-		scene1->Render(*renderertest);
-		renderertest->Present();
+		scene1->Render(*m_Renderer);
+		m_Renderer->Present();
 
 		const auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -163,10 +163,10 @@ int main()
 		//Update camera pos for each shader (change this later)
 		
 		
-		textureShader.enable();
-		textureShader.setUniformMat4("VP", camera.getVP());
-		colorShader.enable();
-		colorShader.setUniformMat4("VP", camera.getVP());
+		textureShader->Bind();
+		textureShader->SetUniformMat4("VP", camera.getVP());
+		colorShader->Bind();
+		colorShader->SetUniformMat4("VP", camera.getVP());
 		material1->Bind();
 		material1->SetUniform("vw_matrix", camera.getVP());
 		material2->Bind();
@@ -187,14 +187,14 @@ int main()
 		GLenum err;
 		while ((err = glGetError()) != GL_NO_ERROR)
 		{
-			std::cout << err << std::endl;
+			//std::cout << err << std::endl;
 		}
 		
 		
 	}
-	textureShader.~Shader();
-	colorShader.~Shader();
-	crateTexture.~Texture();
+	//textureShader.~Shader();
+	//colorShader.~Shader();
+	//crateTexture.~Texture();
 
 	return 0;
 }

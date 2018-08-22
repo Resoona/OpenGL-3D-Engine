@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#define _CRT_SECURE_NO_WARNINGS
+
 
 typedef std::string String;
 
@@ -22,5 +22,6 @@ static String ReadFile(const String& filepath)
 
 	String result(data);
 	delete[] data;
+
 	return result;
 }

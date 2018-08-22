@@ -11,25 +11,75 @@
 #include <string.h>
 
 #include <GL/glew.h>
+#include "../utils/StringUtils.h"
+#include "shaders/ShaderUniform.h"
+
+#define SHADER_VERTEX_INDEX		0
+#define SHADER_UV_INDEX			1
+#define SHADER_MASK_UV_INDEX	2
+#define SHADER_TID_INDEX		3
+#define SHADER_MID_INDEX		4
+#define SHADER_COLOR_INDEX		5
 
 class Shader
 {
 private:
-	GLuint m_ShaderID;
-	const char* m_VertPath;
-	const char* m_FragPath;
-public:
-	Shader(const char* vertPath, const char* fragPath);
-	~Shader();
-	void enable() const;
-	void disable() const;
+	enum class ShaderType
+	{
+		UNKNOWN, VERTEX, FRAGMENT
+	};
+private:
+	String m_Name, m_Path;
+	String m_Source;
+	String m_VertexSource, m_FragmentSource;
+	uint m_ShaderID;
 
-	void setUniformMat4(const std::string& name, const glm::mat4& matrix);
-	//TODO: This returns a private element for texture mapping, rework this
+	std::vector<ShaderUniformDeclaration*> m_Uniforms;
+public:
+	Shader(const String& name, const String& source);
+	~Shader();
+	void Bind() const;
+	void Unbind() const;
+
+
+	void SetUniform1f(const String& name, float value);
+	void SetUniform1fv(const String& name, float* value, int count);
+	void SetUniform1i(const String& name, int value);
+	void SetUniform1iv(const String& name, int* value, int count);
+	void SetUniform2f(const String& name, const glm::vec2& vector);
+	void SetUniform3f(const String& name, const glm::vec3& vector);
+	void SetUniform4f(const String& name, const glm::vec4& vector);
+	void SetUniformMat4(const String& name, const glm::mat4& matrix);
+
+	void ResolveAndSetUniform(ShaderUniformDeclaration* uniform, byte* data);
+	void ResolveAndSetUniform(uint index, byte* data);
+	void ResolveAndSetUniforms(byte* data, uint size);
+
 	inline GLint getShaderID() const { return m_ShaderID; };
+
+	inline const std::vector<ShaderUniformDeclaration*>& GetUniformDeclarations() const { return m_Uniforms; }
 
 
 private:
-	GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path);
-	GLint getUniformLocation(const std::string& name);
+	uint Load(const String& vertSrc, const String& fragSrc);
+
+	void PreProcess(const String& source, String** shaders);
+	void ParseUniforms(const std::vector<String>& lines);
+	ShaderUniformDeclaration::Type GetUniformTypeFromString(const String& token);
+	void ResolveUniforms();
+	GLint GetUniformLocation(const String& name);
+
+
+	void SetUniform1f(uint location, float value);
+	void SetUniform1fv(uint location, float* value, int count);
+	void SetUniform1i(uint location, int value);
+	void SetUniform1iv(uint location, int* value, int count);
+	void SetUniform2f(uint location, const glm::vec2& vector);
+	void SetUniform3f(uint location, const glm::vec3& vector);
+	void SetUniform4f(uint location, const glm::vec4& vector);
+	void SetUniformMat4(uint location, const glm::mat4& matrix);
+
+public:
+	static Shader* FromFile(const String& name, const String& filepath);
+	//static Shader* FromSource(const String& name, const String& source);
 };
