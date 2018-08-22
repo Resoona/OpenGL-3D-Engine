@@ -22,6 +22,7 @@ public:
 		m_UniformName = name;
 		m_UniformData = value;
 		m_Shader->setUniformMat4(name, value);
+		
 	}
 		
 };

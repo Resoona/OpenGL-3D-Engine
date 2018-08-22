@@ -1,5 +1,7 @@
 ﻿#include "MeshCreator.h"
 
+
+
 Mesh* CreateCube(float size, MaterialInstance* material)
 {
 	using namespace glm;
@@ -38,9 +40,6 @@ Mesh* CreateCube(float size, MaterialInstance* material)
 	va->bind();
 	va->PushBuffer(buffer);
 
-
-	//m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
-	
 	uint* indices = new uint[36]
 	{
 		0, 1, 2, 2, 3, 0,

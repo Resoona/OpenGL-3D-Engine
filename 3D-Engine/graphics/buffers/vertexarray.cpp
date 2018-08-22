@@ -29,6 +29,7 @@ void VertexArray::addBuffer(Buffer* buffer, GLuint index)
 void VertexArray::PushBuffer(Buffer* buffer)
 {
 
+
 	m_Buffers.push_back(buffer);
 
 	const std::vector<BufferLayoutType>& layout = buffer->layout.GetLayout();

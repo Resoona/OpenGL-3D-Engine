@@ -21,6 +21,8 @@ void Scene::Add(Mesh* mesh)
 
 void Scene::Render(Renderer3D& renderer)
 {
-	for (Mesh* mesh : m_Meshes)
+	for (Mesh* mesh : m_Meshes) {
 		renderer.Submit(mesh);
+	}
+	
 }

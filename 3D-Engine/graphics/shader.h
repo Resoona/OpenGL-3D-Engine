@@ -24,12 +24,12 @@ public:
 	void enable() const;
 	void disable() const;
 
-	void setUniformMat4(const std::string name, const glm::mat4& matrix);
+	void setUniformMat4(const std::string& name, const glm::mat4& matrix);
 	//TODO: This returns a private element for texture mapping, rework this
 	inline GLint getShaderID() const { return m_ShaderID; };
 
 
 private:
 	GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path);
-	GLint getUniformLocation(const std::string name);
+	GLint getUniformLocation(const std::string& name);
 };

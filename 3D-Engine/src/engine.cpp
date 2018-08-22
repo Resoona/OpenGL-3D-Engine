@@ -22,16 +22,20 @@ int main()
 	Shader textureShader("shaders/TexturedCube.vertexshader", "shaders/TexturedCube.fragmentshader");
 	
 	Renderer3D* renderertest = new ForwardRenderer();
-	Material* material1 = new Material(&Shader("shaders/scene.vertexshader","shaders/scene.fragmentshader"));
-	Mesh* cubetest = CreateCube(5.0f, new MaterialInstance(material1));
-
+	Material* material1 = new Material(new Shader("shaders/scene.vertexshader", "shaders/scene.fragmentshader"));
+	Mesh* cubetest = CreateCube(3.0f, new MaterialInstance(material1));
+	
 	Scene* scene1 = new Scene();
 
 	scene1->Add(cubetest);
 
-	material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
-	material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
-	material1->SetUniform("ml_matrix", glm::rotate(glm::mat4(), 45.0f, glm::vec3(0, 1, 0)));
+	material1->Bind();
+
+	//material1->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
+	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));										
+	material1->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10)));
+
+	
 
 	const int projection_Width = 4;
 	const int projection_Height = 3;
@@ -44,6 +48,7 @@ int main()
 	float cameraYaw = -90.0f;
 
 	Camera camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
+	material1->SetUniform("vw_matrix", camera.getVP());
 
 	Texture crateTexture("textures/crate.bmp");
 	Texture sandTexture("textures/Sand_Texture.bmp");
@@ -100,7 +105,7 @@ int main()
 	double lastY = 0;
 	window.getMousePosition(lastX, lastY);
 	const auto mouseSensitivity = 0.05f;
-
+	
 	
 //========================================================================
 // While Loop
@@ -109,14 +114,14 @@ int main()
 	while (!window.closed() && (!window.isKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.clear();
+		
 
 		scene1->Render(*renderertest);
-		//renderertest->Present();
+		renderertest->Present();
 
 		const auto currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		// ReSharper disable once CppLocalVariableMayBeConst
 		auto cameraSpeed = 2.5f * deltaTime;
 		glm::vec3 cameraPos = camera.getPos();
 
@@ -158,13 +163,17 @@ int main()
 		}
 
 		//Update camera pos for each shader (change this later)
+		
+		
 		textureShader.enable();
 		textureShader.setUniformMat4("VP", camera.getVP());
 		colorShader.enable();
 		colorShader.setUniformMat4("VP", camera.getVP());
+		material1->Bind();
 		material1->SetUniform("vw_matrix", camera.getVP());
 
 		//send objects to renderer and flush all render jobs
+		
 		renderer.submit(&sprite1);
 		renderer.submit(&sprite2);
 		renderer.submit(&groundSprite1);
@@ -173,8 +182,15 @@ int main()
 		
 		
 		renderer.flush();
-
+		
 		window.update();
+		GLenum err;
+		while ((err = glGetError()) != GL_NO_ERROR)
+		{
+			std::cout << err << std::endl;
+		}
+		
+		
 	}
 	textureShader.~Shader();
 	colorShader.~Shader();
