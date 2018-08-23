@@ -1,6 +1,5 @@
 ﻿#include "Mesh.h"
 
-#include "../renderer/Renderer.h"
 
 Mesh::Mesh(VertexArray* vertexArray, IndexBuffer* indexBuffer, MaterialInstance* materialInstance)
 	:m_VertexArray(vertexArray), m_IndexBuffer(indexBuffer), m_MaterialInstance(materialInstance)

@@ -1,6 +1,7 @@
 #include "Engine.h"
 
-
+using namespace entity;
+using namespace component;
 int main()
 {
 //========================================================================
@@ -25,37 +26,37 @@ int main()
 	m_PlantMaterial = new MaterialInstance(material1);
 	m_DefaultMaterial = new MaterialInstance(material2);
 
-	Mesh* plane = new Mesh(va, ib,	m_DefaultMaterial);
-	Model* cube = new Model("objects/cube.obj", m_CubeMaterial);
-	Model* houseplant = new Model("objects/eb_house_plant_01.obj", m_PlantMaterial);
-	
-	scene1->Add(cube->GetMesh());
-	scene1->Add(houseplant->GetMesh());
-	scene1->Add(plane);
 
-	Camera camera = SetupCamera();
-	//material2->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
-	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
+	m_Cube = new Entity();
+	Model* cubeModel = new Model("objects/cube.obj", m_CubeMaterial);
+	m_Cube->AddComponent(new MeshComponent(cubeModel->GetMesh()));
+	m_Cube->AddComponent(new TransformComponent(glm::translate(glm::mat4(), glm::vec3(4, 0, 0))));
 
 
 	glm::mat4 modelMatrix(1.0);
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(-4, -2, 0));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3, 0.3, 0.3));
-
-	m_PlantMaterial->SetUniform("ml_matrix", modelMatrix);
-	m_PlantMaterial->SetUniform("vw_matrix", camera.GetVP());
-
-	m_CubeMaterial->SetUniform("ml_matrix", glm::translate(glm::mat4(), glm::vec3(4, 0, 0)));
-	m_CubeMaterial->SetUniform("vw_matrix", camera.GetVP());
+	m_HousePlant = new Entity();
+	Model* houseplant = new Model("objects/eb_house_plant_01.obj", m_PlantMaterial);
+	m_HousePlant->AddComponent(new MeshComponent(houseplant->GetMesh()));
+	m_HousePlant->AddComponent(new TransformComponent(modelMatrix));
 
 
 	glm::mat4 planeMatrix(1.0);
 	planeMatrix = glm::translate(planeMatrix, glm::vec3(-10, -2.2, -10));
 	planeMatrix = glm::rotate(planeMatrix, glm::radians(90.0f), glm::vec3(1, 0, 0));
+	m_Quad = new Entity();
+	Mesh* plane = new Mesh(va, ib, m_DefaultMaterial);
+	m_Quad->AddComponent(new MeshComponent(plane));
+	m_Quad->AddComponent(new TransformComponent(planeMatrix));
 	
+	
+	scene1->Add(m_Cube);
+	scene1->Add(m_HousePlant);
+	scene1->Add(m_Quad);
 
-	m_DefaultMaterial->SetUniform("ml_matrix", planeMatrix);
-	m_DefaultMaterial->SetUniform("vw_matrix", camera.GetVP());
+	//material2->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
+	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
 
 
 	Texture crateTexture("textures/crate.bmp");
@@ -92,10 +93,11 @@ int main()
 	{
 		std::cout << err << std::endl;
 	}
+
+	Camera* camera = (scene1->GetCamera());
 //========================================================================
 // While Loop
 //========================================================================
-
 	while (!window.Closed() && (!window.IsKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window.Clear();
@@ -104,11 +106,11 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		auto cameraSpeed = 2.5f * deltaTime;
-		glm::vec3 cameraPos = camera.GetPos();
+		glm::vec3 cameraPos = camera->GetPos();
 
 
 		//Callback - modifies values of cameraPos & FPSToggle
-		inputHandler.Listen(camera, cameraPos, cameraSpeed, FPSToggle, lastTime);
+		inputHandler.Listen(*camera, cameraPos, cameraSpeed, FPSToggle, lastTime);
 
 		//========================================================================
 		// Mouse Controller TODO: abstract to inputhandler
@@ -122,11 +124,11 @@ int main()
 		yoffset *= mouseSensitivity;
 
 		
-		float cameraYaw = camera.GetYaw() + xoffset;
-		float cameraPitch = camera.GetPitch() +  yoffset;
+		float cameraYaw = camera->GetYaw() + xoffset;
+		float cameraPitch = camera->GetPitch() +  yoffset;
 
 		//Update all camera values
-		camera.UpdatePos(cameraPos.x, cameraPos.y, cameraPos.z, cameraPitch, cameraYaw);
+		camera->UpdatePos(cameraPos.x, cameraPos.y, cameraPos.z, cameraPitch, cameraYaw);
 		//========================================================================
 		// FPS Toggler
 		//========================================================================
@@ -145,9 +147,9 @@ int main()
 		}
 
 
-		m_CubeMaterial->SetUniform("vw_matrix", camera.GetVP());
-		m_PlantMaterial->SetUniform("vw_matrix", camera.GetVP());
-		m_DefaultMaterial->SetUniform("vw_matrix", camera.GetVP());
+		//m_CubeMaterial->SetUniform("vw_matrix", camera->GetVP());
+		//m_PlantMaterial->SetUniform("vw_matrix", camera->GetVP());
+		//m_DefaultMaterial->SetUniform("vw_matrix", camera->GetVP());
 
 	
 		m_Renderer->Present();
@@ -166,21 +168,6 @@ int main()
 	return 0;
 }
 
-
-Camera SetupCamera()
-{
-	const int projection_Width = 4;
-	const int projection_Height = 3;
-	const float FOV = 45.0f;
-	const float cameraX = 0;
-	const float cameraY = 2;
-	const float cameraZ = 5;
-	//These values change with mouse-callback
-	float cameraPitch = 0.0f;
-	float cameraYaw = -90.0f;
-
-	return Camera(projection_Width, projection_Height, FOV, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
-}
 
 /*
 const glm::vec4 colors(1, 0.5, 1, 1);

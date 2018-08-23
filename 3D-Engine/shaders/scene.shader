@@ -21,7 +21,7 @@ vec3 color;
 void main()
 {
 
-	gl_Position = vw_matrix * ml_matrix * position;
+	gl_Position = pr_matrix * vw_matrix * ml_matrix * position;
 	vs_out.position = ml_matrix * position;
 	vs_out.normal = normal;
 	vs_out.uv = uv;

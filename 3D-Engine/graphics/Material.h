@@ -22,6 +22,8 @@ public:
 	void UnBind() const;
 	void DumpUniformData() const;
 
+	inline Shader* GetShader() const { return m_Shader; }
+
 	template<typename T>
 	inline void SetUniform(const String& name, const T& value)
 	{

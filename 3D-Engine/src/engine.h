@@ -11,11 +11,11 @@
 #include "../graphics/Model.h"
 
 
-
-	Camera SetupCamera();
-
 	MaterialInstance* m_CubeMaterial;
 	MaterialInstance* m_PlantMaterial;
+	entity::Entity* m_Cube;
+	entity::Entity* m_HousePlant;
+	entity::Entity* m_Quad;
 	MaterialInstance* m_DefaultMaterial;
 	Renderer3D* m_Renderer;
 	

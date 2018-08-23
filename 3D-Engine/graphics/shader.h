@@ -12,6 +12,10 @@
 #define SHADER_MID_INDEX		4
 #define SHADER_COLOR_INDEX		5
 
+#define SHADER_UNIFORM_PROJECTION_MATRIX_NAME	"pr_matrix"
+#define SHADER_UNIFORM_VIEW_MATRIX_NAME			"vw_matrix"
+#define SHADER_UNIFORM_MODEL_MATRIX_NAME		"ml_matrix"
+
 class Shader
 {
 private:
@@ -42,13 +46,18 @@ public:
 	void SetUniform4f(const String& name, const glm::vec4& vector);
 	void SetUniformMat4(const String& name, const glm::mat4& matrix);
 
-	void ResolveAndSetUniform(ShaderUniformDeclaration* uniform, byte* data);
+	void SetUniform(const String& name, byte* data);
+	void ResolveAndSetUniform(ShaderUniformDeclaration* uniform, byte* data, int offset);
 	void ResolveAndSetUniform(uint index, byte* data);
 	void ResolveAndSetUniforms(byte* data, uint size);
 
 	inline GLint getShaderID() const { return m_ShaderID; };
 
+	
 	inline const std::vector<ShaderUniformDeclaration*>& GetUniformDeclarations() const { return m_Uniforms; }
+
+	bool HasUniform(const String& name) const;
+	ShaderUniformDeclaration* GetUniformDeclaration(uint location);
 
 
 private:
@@ -58,8 +67,11 @@ private:
 	void ParseUniforms(const std::vector<String>& lines);
 	ShaderUniformDeclaration::Type GetUniformTypeFromString(const String& token);
 	void ResolveUniforms();
+	void ValidateUniforms();
+	bool IsSystemUniform(ShaderUniformDeclaration* uniform) const;
 	GLint GetUniformLocation(const String& name);
 
+	ShaderUniformDeclaration* FindUniformDeclaration(const String& name);
 
 	void SetUniform1f(uint location, float value);
 	void SetUniform1fv(uint location, float* value, int count);

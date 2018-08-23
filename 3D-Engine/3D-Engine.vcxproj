@@ -129,10 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entity\component\Component.cpp" />
+    <ClCompile Include="entity\component\MeshComponent.cpp" />
+    <ClCompile Include="entity\component\TransformComponent.cpp" />
+    <ClCompile Include="entity\Entity.cpp" />
     <ClCompile Include="graphics\buffers\Buffer.cpp" />
     <ClCompile Include="graphics\buffers\BufferLayout.cpp" />
     <ClCompile Include="graphics\buffers\IndexBuffer.cpp" />
-    <ClCompile Include="graphics\buffers\vboindexer.cpp" />
     <ClCompile Include="graphics\buffers\VertexArray.cpp" />
     <ClCompile Include="graphics\Camera.cpp" />
     <ClCompile Include="graphics\Material.cpp" />
@@ -146,21 +149,25 @@
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="renderer\ForwardRenderer.cpp" />
-    <ClCompile Include="renderer\Renderer.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entity\component\Component.h" />
+    <ClInclude Include="entity\component\Components.h" />
+    <ClInclude Include="entity\component\MeshComponent.h" />
+    <ClInclude Include="entity\component\TransformComponent.h" />
+    <ClInclude Include="entity\Entity.h" />
     <ClInclude Include="graphics\buffers\Buffer.h" />
     <ClInclude Include="graphics\buffers\BufferLayout.h" />
     <ClInclude Include="graphics\buffers\IndexBuffer.h" />
-    <ClInclude Include="graphics\buffers\vboindexer.hpp" />
     <ClInclude Include="graphics\buffers\VertexArray.h" />
     <ClInclude Include="graphics\Camera.h" />
     <ClInclude Include="graphics\Material.h" />
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\MeshCreator.h" />
     <ClInclude Include="graphics\Model.h" />
+    <ClInclude Include="renderer\RenderCommand.h" />
     <ClInclude Include="graphics\Scene.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\shaders\ShaderUniform.h" />
@@ -169,7 +176,6 @@
     <ClInclude Include="graphics\Window.h" />
     <ClInclude Include="renderer\ForwardRenderer.h" />
     <ClInclude Include="renderer\IRenderable.h" />
-    <ClInclude Include="renderer\Renderer.h" />
     <ClInclude Include="renderer\Renderer3D.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\InputHandler.h" />
