@@ -18,11 +18,11 @@ void Mesh::Render(Renderer3D& renderer)
 {
 	m_MaterialInstance->Bind();
 
-	m_VertexArray->bind();
-	m_IndexBuffer->bind();
+	m_VertexArray->Bind();
+	m_IndexBuffer->Bind();
 	m_VertexArray->Draw(m_IndexBuffer->getCount());
-	m_IndexBuffer->unbind();
-	m_VertexArray->unbind();
+	m_IndexBuffer->Unbind();
+	m_VertexArray->Unbind();
 
 	m_MaterialInstance->Unbind();
 

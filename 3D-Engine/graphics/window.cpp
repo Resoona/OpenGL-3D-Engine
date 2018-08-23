@@ -7,7 +7,7 @@ Window::Window(const char *title, int width, int height)
 	m_Title = title;
 	m_Width = width;
 	m_Height = height;
-	if (!init())
+	if (!Init())
 	{
 		glfwTerminate();
 	}
@@ -19,7 +19,7 @@ Window::~Window()
 	glfwTerminate();
 }
 
-bool Window::init()
+bool Window::Init()
 {
 
 	if (!glfwInit())
@@ -77,20 +77,20 @@ bool Window::init()
 	return true;
 }
 
-bool Window::isKeyPressed(unsigned int keycode) const
+bool Window::IsKeyPressed(unsigned int keycode) const
 {
 	if (keycode > MAX_KEYS) return false;
 	return m_Keys[keycode];
 }
 
-bool Window::isMouseButtonPressed(unsigned int button) const
+bool Window::IsMouseButtonPressed(unsigned int button) const
 {
 	if (button > MAX_BUTTONS) return false;
 	return m_Buttons[button];
 
 }
 
-void Window::getMousePosition(double& x, double& y) const
+void Window::GetMousePosition(double& x, double& y) const
 {
 	x = mx;
 	y = my;
@@ -98,18 +98,18 @@ void Window::getMousePosition(double& x, double& y) const
 
 
 
-void Window::clear() const
+void Window::Clear() const
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::update()
+void Window::Update()
 {
 	glfwSwapBuffers(m_Window);
 	glfwPollEvents();
 }
 
-bool Window::closed() const
+bool Window::Closed() const
 {
 	return glfwWindowShouldClose(m_Window) == 1;
 }

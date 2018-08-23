@@ -24,20 +24,20 @@ private:
 public:
 	Window(const char *title, int width, int height);
 	~Window();
-	void clear() const;
-	void update();
-	bool closed() const;
+	void Clear() const;
+	void Update();
+	bool Closed() const;
 
-	inline int getWidth() const { return m_Width; }
-	inline int getHeight() const { return m_Height; }
+	inline int GetWidth() const { return m_Width; }
+	inline int GetHeight() const { return m_Height; }
 
-	bool isKeyPressed(unsigned int keycode) const;
-	bool isMouseButtonPressed(unsigned int button) const;
-	void getMousePosition(double& x, double& y) const;
+	bool IsKeyPressed(unsigned int keycode) const;
+	bool IsMouseButtonPressed(unsigned int button) const;
+	void GetMousePosition(double& x, double& y) const;
 
 
 private:
-	bool init();
+	bool Init();
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	static void mouse_button_callback(GLFWwindow* window, int button, int scancode, int mods);
 	static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);

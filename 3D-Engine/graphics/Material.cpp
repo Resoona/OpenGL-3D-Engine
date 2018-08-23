@@ -1,4 +1,5 @@
 ﻿#include "Material.h"
+#include <iostream>
 
 
 Material::Material(Shader* shader)
@@ -61,7 +62,7 @@ void Material::UnBind() const
 }
 
 MaterialInstance::MaterialInstance(Material* material)
-	: m_Material(material), m_SetUniforms(0)
+	: m_Material(material), m_SetUniforms(0), m_Texture(0)
 {
 	InitUniformStorage();
 }
@@ -100,6 +101,8 @@ void MaterialInstance::Bind() const
 	// TODO: Textures. This needs to be resolved by the renderer.
 
 	m_Material->Bind();
+	if (m_Texture != nullptr)
+	m_Texture->Bind();
 
 	uint overrides = m_SetUniforms;
 	uint index = 0;

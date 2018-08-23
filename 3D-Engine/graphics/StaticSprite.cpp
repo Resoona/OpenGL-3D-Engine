@@ -1,6 +1,7 @@
 ﻿#include "StaticSprite.h"
 #include "glm/gtx/string_cast.hpp"
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 StaticSprite::StaticSprite(float x, float y, float z, float width, float height, float depth, const glm::vec4& color,
 	Shader& shader) : m_Shader(shader), m_textureID(0)
@@ -106,9 +107,9 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 		22, 23, 20
 	};
 
-	m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
-	m_VertexArray->addBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
-	m_VertexArray->addBuffer(new Buffer(colors, sizeof(colors), 4), 2);
+	m_VertexArray->AddBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
+	m_VertexArray->AddBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
+	m_VertexArray->AddBuffer(new Buffer(colors, sizeof(colors), 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(indices, sizeof(indices));
 }
@@ -150,9 +151,9 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 		2, 3, 0
 	};
 
-	m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
-	m_VertexArray->addBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
-	m_VertexArray->addBuffer(new Buffer(colors, sizeof(colors), 4), 2);
+	m_VertexArray->AddBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
+	m_VertexArray->AddBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
+	m_VertexArray->AddBuffer(new Buffer(colors, sizeof(colors), 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(indices, 6);
 }
@@ -255,9 +256,9 @@ StaticSprite::StaticSprite(float x, float y, float z, float width, float height,
 
 	m_VertexArray = new VertexArray();
 
-	m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
-	m_VertexArray->addBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
-	m_VertexArray->addBuffer(new Buffer(colors, 4, 4), 2);
+	m_VertexArray->AddBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
+	m_VertexArray->AddBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
+	m_VertexArray->AddBuffer(new Buffer(colors, 4, 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(indicies, sizeof(indicies));
 }
@@ -271,7 +272,6 @@ StaticSprite::StaticSprite(float x, float y, float z, std::vector<glm::vec3> ver
 	m_size = new glm::vec3(2, 2, 2);
 
 	int vertSize = vertices.size();
-	std::cout << vertSize << std::endl;
 
 
 
@@ -289,8 +289,8 @@ StaticSprite::StaticSprite(float x, float y, float z, std::vector<glm::vec3> ver
 	m_VertexArray = new VertexArray();
 
 	//m_VertexArray->addBuffer(new Buffer(verticies, sizeof(verticies), 3), 0);
-	m_VertexArray->addBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
-	m_VertexArray->addBuffer(new Buffer(colors, 4, 4), 2);
+	m_VertexArray->AddBuffer(new Buffer(uvdata, sizeof(uvdata), 2), 1);
+	m_VertexArray->AddBuffer(new Buffer(colors, 4, 4), 2);
 
 	m_IndexBuffer = new IndexBuffer(&indicies[0], sizeof(&indicies[0]));
 	
@@ -305,6 +305,6 @@ StaticSprite::~StaticSprite()
 
 void StaticSprite::bindArrays()
 {
-	m_VertexArray->bind();
-	m_IndexBuffer->bind();
+	m_VertexArray->Bind();
+	m_IndexBuffer->Bind();
 }

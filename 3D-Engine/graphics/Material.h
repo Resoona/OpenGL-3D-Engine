@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Shader.h"
 #include "../utils/StringUtils.h"
+#include "Texture.h"
 
 
 class Material
@@ -54,6 +55,9 @@ private:
 	uint m_UniformDataSize;
 	uint m_SetUniforms;
 
+	//std::vector<Texture*> m_Textures;
+
+	Texture* m_Texture;
 public:
 	MaterialInstance(Material* material);
 
@@ -62,6 +66,7 @@ public:
 	void Bind() const;
 	void Unbind() const;
 	void UnsetUniform(const String& name);
+	inline void SetTexture(const String& name, Texture* texture) { m_Texture = texture; }
 
 	template<typename T>
 	void SetUniform(const String& name, const T& value)

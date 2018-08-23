@@ -14,9 +14,9 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void addBuffer(Buffer* buffer, GLuint index);
-	void bind() const;
-	void unbind() const;
+	void AddBuffer(Buffer* buffer, GLuint index);
+	void Bind() const;
+	void Unbind() const;
 	void VertexArray::Draw(GLuint count) const;
 	void PushBuffer(Buffer* buffer);
 

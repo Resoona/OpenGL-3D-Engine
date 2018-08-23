@@ -24,12 +24,12 @@ void Buffer::SetData(GLuint size, const void* data)
 	glBufferData(target, size, data, usage);
 }
 
-void Buffer::bind() const
+void Buffer::Bind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
 }
 
-void Buffer::unbind() const
+void Buffer::Unbind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

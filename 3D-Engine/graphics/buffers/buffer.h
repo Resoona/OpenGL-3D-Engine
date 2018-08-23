@@ -19,8 +19,8 @@ public:
 	Buffer(GLuint target, GLuint usage);
 
 
-	void bind() const;
-	void unbind() const;
+	void Bind() const;
+	void Unbind() const;
 	void SetData(GLuint size, const void* data);
 
 	inline GLuint getComponentCount() const { return m_ComponentCount; }

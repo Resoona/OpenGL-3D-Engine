@@ -12,6 +12,7 @@
 
 
 
+	Camera SetupCamera();
 
 	MaterialInstance* m_CubeMaterial;
 	MaterialInstance* m_PlantMaterial;

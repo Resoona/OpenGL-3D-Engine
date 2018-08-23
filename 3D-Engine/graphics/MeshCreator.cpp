@@ -29,7 +29,7 @@ VertexArray* CreateQuad(float x, float y, float width, float height)
 	data[3].uv = vec2(1, 1);
 
 	Buffer* buffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-	buffer->bind();
+	buffer->Bind();
 	buffer->SetData(sizeof(VertexData) * 4, data);
 
 	buffer->layout.Push<vec3>("position");
@@ -40,7 +40,7 @@ VertexArray* CreateQuad(float x, float y, float width, float height)
 	buffer->layout.Push<GLbyte>("color", 4, true);
 
 	VertexArray* result = new VertexArray();
-	result->bind();
+	result->Bind();
 	result->PushBuffer(buffer);
 
 	return result;
@@ -79,7 +79,7 @@ Mesh* CreateCube(float size, MaterialInstance* material)
 	data[7].normal = vec3(-1.0f, 1.0f, -1.0f);
 
 	Buffer* buffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-	buffer->bind();
+	buffer->Bind();
 	buffer->SetData(8 * sizeof(Vertex), data);
 
 	buffer->layout.Push<vec3>("position");
@@ -87,7 +87,7 @@ Mesh* CreateCube(float size, MaterialInstance* material)
 	buffer->layout.Push<vec2>("uv");
 
 	VertexArray* va = new VertexArray();
-	va->bind();
+	va->Bind();
 	va->PushBuffer(buffer);
 
 	uint* indices = new uint[36]

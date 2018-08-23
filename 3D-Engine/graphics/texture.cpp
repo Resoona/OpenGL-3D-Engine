@@ -12,7 +12,7 @@
 Texture::Texture( const char* imageloc)
 	: m_imageloc(imageloc)
 {
-	m_Texture = loadBMP_custom(imageloc);
+	m_Texture = LoadBMP_custom(imageloc);
 }
 
 Texture::~Texture()
@@ -20,8 +20,19 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_Texture);
 }
 
+void Texture::Bind()
+{
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
+}
 
-GLuint loadBMP_custom(const char * imagepath) {
+void Texture::Unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+
+
+GLuint LoadBMP_custom(const char * imagepath) {
 
 	printf("Reading image %s\n", imagepath);
 
@@ -138,7 +149,7 @@ GLuint loadBMP_custom(const char * imagepath) {
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
-GLuint loadDDS(const char * imagepath) {
+GLuint LoadDDS(const char * imagepath) {
 
 	unsigned char header[124];
 

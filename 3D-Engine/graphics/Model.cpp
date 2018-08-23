@@ -81,7 +81,7 @@ struct std::hash<Model::IndexSet>
 			}
 
 			Buffer* buffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			buffer->bind();
+			buffer->Bind();
 			buffer->SetData(vertices.size() * sizeof(Vertex), &vertices[0]);
 
 			buffer->layout.Push<vec3>("position");
@@ -89,7 +89,7 @@ struct std::hash<Model::IndexSet>
 			buffer->layout.Push<vec2>("uv");
 
 			VertexArray* va = new VertexArray();
-			va->bind();
+			va->Bind();
 			va->PushBuffer(buffer);
 
 			IndexBuffer* ib = new IndexBuffer(&indices[0], indices.size());

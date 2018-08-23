@@ -29,12 +29,15 @@ public:
 	Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw);
 	~Camera();
 	
-	inline glm::vec3 getPos() { return m_pos; };
-	inline glm::vec3 getFront() { return m_front; };
-	inline glm::vec3 getUp() { return m_up; };
-	inline glm::mat4 getVP() { return m_VP; };
+	inline glm::vec3 GetPos() { return m_pos; }
+	inline glm::vec3 GetFront() { return m_front; }
+	inline glm::vec3 GetUp() { return m_up; }
+	inline glm::mat4 GetVP() { return m_VP; }
+	inline float GetYaw() { return m_yaw; }
+	inline float GetPitch() { return m_pitch; }
 
-	void updatePos(float newx,float newy,float newz, float newpitch, float newyaw);
-	void update();
-	void reset() const;
+
+	void UpdatePos(float newx,float newy,float newz, float newpitch, float newyaw);
+	void Update();
+	void Reset() const;
 };

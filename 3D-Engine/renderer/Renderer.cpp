@@ -1,4 +1,5 @@
 ﻿#include "Renderer.h"
+#include <glm/gtc/matrix_transform.inl>
 
 void Renderer::submit(StaticSprite* sprite)
 {
@@ -11,8 +12,8 @@ void Renderer::flush()
 	{
 		StaticSprite* sprite = m_RenderQueue.front();
 
-		sprite->getVAO()->bind();
-		sprite->getIBO()->bind();
+		sprite->getVAO()->Bind();
+		sprite->getIBO()->Bind();
 
 		sprite->getShader().Bind();
 		sprite->getShader().SetUniformMat4("M", glm::translate(glm::mat4(), *sprite->getPosition()));
@@ -23,8 +24,8 @@ void Renderer::flush()
 
 		sprite->getShader().Unbind();
 
-		sprite->getIBO()->unbind();
-		sprite->getVAO()->unbind();
+		sprite->getIBO()->Unbind();
+		sprite->getVAO()->Unbind();
 
 		m_RenderQueue.pop_front();
 	}

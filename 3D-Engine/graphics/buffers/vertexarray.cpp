@@ -14,16 +14,16 @@ VertexArray::~VertexArray()
 	}
 }
 
-void VertexArray::addBuffer(Buffer* buffer, GLuint index)
+void VertexArray::AddBuffer(Buffer* buffer, GLuint index)
 {
-	bind();
-	buffer->bind();
+	Bind();
+	buffer->Bind();
 
 	glEnableVertexAttribArray(index);
 	glVertexAttribPointer(index, buffer->getComponentCount(), GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	buffer->unbind();
-	unbind();
+	buffer->Unbind();
+	Unbind();
 }
 
 void VertexArray::PushBuffer(Buffer* buffer)
@@ -41,12 +41,12 @@ void VertexArray::PushBuffer(Buffer* buffer)
 }
 
 
-void VertexArray::bind() const
+void VertexArray::Bind() const
 {
 	glBindVertexArray(m_ArrayID);
 }
 
-void VertexArray::unbind() const
+void VertexArray::Unbind() const
 {
 	glBindVertexArray(0);
 }

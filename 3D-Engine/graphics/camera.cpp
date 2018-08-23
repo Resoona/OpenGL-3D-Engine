@@ -20,14 +20,14 @@ Camera::Camera(int projWidth, int projHeight, float fov, float x, float y, float
 	m_right = glm::normalize(glm::cross(m_front, m_up));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 
-	update();
+	Update();
 }
 
 Camera::~Camera()
 {
 }
 
-void Camera::updatePos(float newx, float newy, float newz, float newpitch, float newyaw)
+void Camera::UpdatePos(float newx, float newy, float newz, float newpitch, float newyaw)
 {
 	m_pos = glm::vec3(newx, newy, newz);
 	m_pitch = newpitch;
@@ -47,10 +47,10 @@ void Camera::updatePos(float newx, float newy, float newz, float newpitch, float
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 
 	
-	update();
+	Update();
 }
 
-void Camera::update()
+void Camera::Update()
 {
 	m_Projection = glm::perspective(glm::radians(m_fov), (float)m_projWidth / (float)m_projHeight, 0.1f, 1000.0f);
 	m_View = glm::lookAt(m_pos,

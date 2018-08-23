@@ -1,15 +1,6 @@
 #pragma once
 #include <vector>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <sstream>
 #include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
-
-#include <stdlib.h>
-#include <string.h>
-
 #include <GL/glew.h>
 #include "../utils/StringUtils.h"
 #include "shaders/ShaderUniform.h"
