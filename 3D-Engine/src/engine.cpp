@@ -4,11 +4,8 @@ using namespace entity;
 using namespace component;
 int main()
 {
-//========================================================================
-// Create Objects (Camera is a singular entity)
-//========================================================================
 
-	Window window("3D-Engine", 960, 540);
+	Window* window = new Window("3D-Engine", 960, 540);
 
 	m_Renderer = new ForwardRenderer();
 	Scene* scene1 = new Scene();
@@ -25,7 +22,7 @@ int main()
 	m_CubeMaterial = new MaterialInstance(material1);
 	m_PlantMaterial = new MaterialInstance(material1);
 	m_DefaultMaterial = new MaterialInstance(material2);
-
+	m_SphereMaterial = new MaterialInstance(material1);
 
 	m_Cube = new Entity();
 	Model* cubeModel = new Model("objects/cube.obj", m_CubeMaterial);
@@ -49,11 +46,17 @@ int main()
 	Mesh* plane = new Mesh(va, ib, m_DefaultMaterial);
 	m_Quad->AddComponent(new MeshComponent(plane));
 	m_Quad->AddComponent(new TransformComponent(planeMatrix));
+
+	m_Sphere = new Entity();
+	Model* sphere = new Model("objects/Sphere.obj", m_SphereMaterial);
+	m_Sphere->AddComponent(new MeshComponent(sphere->GetMesh()));
+	m_Sphere->AddComponent(new TransformComponent(glm::mat4(1)));
 	
 	
 	scene1->Add(m_Cube);
 	scene1->Add(m_HousePlant);
 	scene1->Add(m_Quad);
+	scene1->Add(m_Sphere);
 
 	//material2->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
 	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
@@ -62,30 +65,10 @@ int main()
 	Texture crateTexture("textures/crate.bmp");
 	Texture sandTexture("textures/Sand_Texture.bmp");
 
-	//m_DefaultMaterial->SetTexture("Crate",&crateTexture);
+
+	InputHandler inputHandler(window, scene1->GetCamera());
 
 
-
-	InputHandler inputHandler(window);
-
-//========================================================================
-// Global vars for update loop
-//========================================================================
-
-	float lastTime = glfwGetTime();
-	auto nbFrames = 0;
-	auto FPSToggle = false;
-	auto deltaTime = 0.0f;	// Time between current frame and last frame
-	auto lastFrame = 0.0f; // Time of last frame
-
-	double mouseX = 0;
-	double mouseY = 0;
-	window.GetMousePosition(mouseX, mouseY);
-	double lastX = 0;
-	double lastY = 0;
-	window.GetMousePosition(lastX, lastY);
-	const auto mouseSensitivity = 0.05f;
-	
 	scene1->Render(*m_Renderer);
 
 	GLenum err;
@@ -94,76 +77,20 @@ int main()
 		std::cout << err << std::endl;
 	}
 
-	Camera* camera = (scene1->GetCamera());
-//========================================================================
-// While Loop
-//========================================================================
-	while (!window.Closed() && (!window.IsKeyPressed(GLFW_KEY_ESCAPE)))
+	while (!window->Closed() && (!window->IsKeyPressed(GLFW_KEY_ESCAPE)))
 	{
-		window.Clear();
-		
-		const auto currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-		auto cameraSpeed = 2.5f * deltaTime;
-		glm::vec3 cameraPos = camera->GetPos();
+		window->Clear();
 
-
-		//Callback - modifies values of cameraPos & FPSToggle
-		inputHandler.Listen(*camera, cameraPos, cameraSpeed, FPSToggle, lastTime);
-
-		//========================================================================
-		// Mouse Controller TODO: abstract to inputhandler
-		//========================================================================		
-		auto xoffset = mouseX - lastX;
-		auto yoffset = lastY - mouseY;
-		lastX = mouseX;
-		lastY = mouseY;
-		window.GetMousePosition(mouseX, mouseY);
-		xoffset *= mouseSensitivity;
-		yoffset *= mouseSensitivity;
-
-		
-		float cameraYaw = camera->GetYaw() + xoffset;
-		float cameraPitch = camera->GetPitch() +  yoffset;
-
-		//Update all camera values
-		camera->UpdatePos(cameraPos.x, cameraPos.y, cameraPos.z, cameraPitch, cameraYaw);
-		//========================================================================
-		// FPS Toggler
-		//========================================================================
-		if (FPSToggle)
-		{
-			// ReSharper disable once CppLocalVariableMayBeConst
-			double currentTime = glfwGetTime();
-			nbFrames++;
-			if (currentTime - lastTime >= 1.0)
-			{   // If last prinf() was more than 1 sec ago
-				// printf and reset timer
-				printf("%f ms/frame\n", 1000.0 / double(nbFrames));
-				nbFrames = 0;
-				lastTime += 1.0;
-			}
-		}
-
+		//Callback - modifies values of lastTime & FPSToggle
+		inputHandler.Listen();
 
 		//m_CubeMaterial->SetUniform("vw_matrix", camera->GetVP());
 		//m_PlantMaterial->SetUniform("vw_matrix", camera->GetVP());
 		//m_DefaultMaterial->SetUniform("vw_matrix", camera->GetVP());
-
 	
 		m_Renderer->Present();
-
-
-		
-		window.Update();
-		
-		
-		
+		window->Update();
 	}
-	//textureShader.~Shader();
-	//colorShader.~Shader();
-	//crateTexture.~Texture();
 
 	return 0;
 }

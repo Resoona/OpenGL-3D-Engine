@@ -13,10 +13,15 @@
 
 	MaterialInstance* m_CubeMaterial;
 	MaterialInstance* m_PlantMaterial;
+	MaterialInstance* m_DefaultMaterial;
+	MaterialInstance* m_SphereMaterial;
+
+
 	entity::Entity* m_Cube;
 	entity::Entity* m_HousePlant;
 	entity::Entity* m_Quad;
-	MaterialInstance* m_DefaultMaterial;
+	entity::Entity* m_Sphere;
+	
 	Renderer3D* m_Renderer;
 	
 	
