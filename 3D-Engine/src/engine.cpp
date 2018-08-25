@@ -58,9 +58,6 @@ int main()
 	scene1->Add(m_Quad);
 	scene1->Add(m_Sphere);
 
-	//material2->SetUniform("pr_matrix", glm::perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f));
-	//material1->SetUniform("vw_matrix", glm::translate(glm::mat4(), glm::vec3(0, 0, -10.0f)));
-
 
 	Texture crateTexture("textures/crate.bmp");
 	Texture sandTexture("textures/Sand_Texture.bmp");
@@ -80,48 +77,10 @@ int main()
 	while (!window->Closed() && (!window->IsKeyPressed(GLFW_KEY_ESCAPE)))
 	{
 		window->Clear();
-
-		//Callback - modifies values of lastTime & FPSToggle
 		inputHandler.Listen();
-
-		//m_CubeMaterial->SetUniform("vw_matrix", camera->GetVP());
-		//m_PlantMaterial->SetUniform("vw_matrix", camera->GetVP());
-		//m_DefaultMaterial->SetUniform("vw_matrix", camera->GetVP());
-	
 		m_Renderer->Present();
 		window->Update();
 	}
 
 	return 0;
 }
-
-
-/*
-const glm::vec4 colors(1, 0.5, 1, 1);
-glm::vec4 green(0, 1, 0, 1);
-
-const glm::vec4 colorSkyBlue(0.4863, 0.6798, 1.0000, 1.0);
-StaticSprite sprite1(1, 0, -1, 2, 2, 2, crateTexture.getID(), *textureShader);
-
-StaticSprite sprite2(-4, -1, -1, 2, 2, colors, *colorShader);
-
-StaticSprite groundSprite1(-25, -2, 25, 50, 0.1, 50, sandTexture.getID(), *textureShader);
-
-StaticSprite skyBox(-50, -50, -50, 100, 100, 100, colorSkyBlue, *colorShader);
-
-
-textureShader->Bind();
-textureShader->SetUniformMat4("VP", camera.GetVP());
-colorShader->Bind();
-colorShader->SetUniformMat4("VP", camera.GetVP());
-
-
-renderer.submit(&sprite1);
-renderer.submit(&sprite2);
-renderer.submit(&groundSprite1);
-renderer.submit(&skyBox);
-
-
-
-renderer.flush();
-*/

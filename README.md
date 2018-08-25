@@ -3,7 +3,7 @@ A 3D engine using OpenGL - In development
 
 This is my first attempt at building a working engine. Expect many bad practices as I figure out how to display anything on the screen.
 
-Overall goal for this project is to generate terrain and object model loading. Post Process Effects to be added afterwards.
+Overall goal for this project is to generate terrain(Grass/Trees/Water) and object model loading(Buildings). Additionally implement different lighting techniques to the world. 
 
 Feel free to follow my progress on my website as I post updates to my application!
 

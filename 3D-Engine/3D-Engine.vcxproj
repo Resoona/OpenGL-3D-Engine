@@ -145,7 +145,6 @@
     <ClCompile Include="graphics\Scene.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
     <ClCompile Include="graphics\shaders\ShaderUniform.cpp" />
-    <ClCompile Include="graphics\StaticSprite.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="renderer\ForwardRenderer.cpp" />
@@ -171,7 +170,6 @@
     <ClInclude Include="graphics\Scene.h" />
     <ClInclude Include="graphics\Shader.h" />
     <ClInclude Include="graphics\shaders\ShaderUniform.h" />
-    <ClInclude Include="graphics\StaticSprite.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />
     <ClInclude Include="renderer\ForwardRenderer.h" />
