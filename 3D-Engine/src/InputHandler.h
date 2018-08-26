@@ -11,15 +11,15 @@ private:
 
 	bool FPSToggle = false;
 
-	double m_MouseX = 0;
-	double m_MouseY = 0;
+	double m_MouseX = 0.0f;
+	double m_MouseY = 0.0f;
 	double m_LastMouseX = 0;
 	double m_LastMouseY = 0;
 	
 	const float m_MouseSensitivity = 0.05f;
 	
 
-	float m_LastTime = glfwGetTime();
+	float m_LastTime = (float)glfwGetTime();
 	float m_NumberOfFrames = 0;
 	float m_LastFrame = 0.0f; // Time of last frame
 

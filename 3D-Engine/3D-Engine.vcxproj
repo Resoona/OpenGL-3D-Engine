@@ -143,7 +143,7 @@
     <ClCompile Include="graphics\MeshCreator.cpp" />
     <ClCompile Include="graphics\Model.cpp" />
     <ClCompile Include="graphics\Scene.cpp" />
-    <ClCompile Include="graphics\Shader.cpp" />
+    <ClCompile Include="graphics\shaders\Shader.cpp" />
     <ClCompile Include="graphics\shaders\ShaderUniform.cpp" />
     <ClCompile Include="graphics\Texture.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
@@ -166,9 +166,10 @@
     <ClInclude Include="graphics\Mesh.h" />
     <ClInclude Include="graphics\MeshCreator.h" />
     <ClInclude Include="graphics\Model.h" />
+    <ClInclude Include="graphics\shaders\ShaderResource.h" />
     <ClInclude Include="renderer\RenderCommand.h" />
     <ClInclude Include="graphics\Scene.h" />
-    <ClInclude Include="graphics\Shader.h" />
+    <ClInclude Include="graphics\shaders\Shader.h" />
     <ClInclude Include="graphics\shaders\ShaderUniform.h" />
     <ClInclude Include="graphics\Texture.h" />
     <ClInclude Include="graphics\Window.h" />

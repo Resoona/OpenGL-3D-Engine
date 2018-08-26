@@ -1,7 +1,8 @@
 ﻿#pragma once
-#include "Shader.h"
+#include "shaders/Shader.h"
 #include "../utils/StringUtils.h"
 #include "Texture.h"
+#include "shaders/ShaderResource.h"
 
 
 class Material
@@ -14,6 +15,10 @@ private:
 	GLbyte* m_UniformData;
 	GLuint m_UniformDataSize;
 
+protected:
+	std::vector<Texture*> m_Textures;
+	const ShaderResourceList* m_Resources;
+
 public:
 	Material(Shader* shader);
 	~Material();
@@ -21,6 +26,7 @@ public:
 	void Bind() const;
 	void UnBind() const;
 	void DumpUniformData() const;
+	void SetTexture(const String& name, Texture* texture);
 
 	inline Shader* GetShader() const { return m_Shader; }
 
@@ -44,9 +50,10 @@ public:
 		return (T*)&m_UniformData[uniform->GetOffset()];
 	}
 
-private:
+protected:
 	void InitUniformStorage();
 	const ShaderUniformDeclaration* GetUniformDeclaration(const String& name) const;
+	ShaderResourceDeclaration* FindResourceDeclaration(const String& name);
 };
 
 class MaterialInstance
@@ -57,9 +64,10 @@ private:
 	uint m_UniformDataSize;
 	uint m_SetUniforms;
 
-	//std::vector<Texture*> m_Textures;
 
-	Texture* m_Texture;
+	std::vector<Texture*> m_Textures;
+
+	const ShaderResourceList* m_Resources;
 public:
 	MaterialInstance(Material* material);
 
@@ -68,7 +76,7 @@ public:
 	void Bind() const;
 	void Unbind() const;
 	void UnsetUniform(const String& name);
-	inline void SetTexture(const String& name, Texture* texture) { m_Texture = texture; }
+	void SetTexture(const String& name, Texture* texture);
 
 	template<typename T>
 	void SetUniform(const String& name, const T& value)
@@ -87,4 +95,5 @@ public:
 private:
 	void InitUniformStorage();
 	int GetUniformDeclarationIndex(const String& name) const;
+	ShaderResourceDeclaration* FindResourceDeclaration(const String& name);
 };

@@ -3,11 +3,11 @@ A 3D engine using OpenGL - In development
 
 This is my first attempt at building a working engine. Expect many bad practices as I figure out how to display anything on the screen.
 
-Overall goal for this project is to generate terrain(Grass/Trees/Water) and object model loading(Buildings). Additionally implement different lighting techniques to the world. 
+Overall goal for this project is to generate terrain(Grass/Trees/Water) and object model loading(Buildings). Additionally implement different lighting techniques to the world.
 
-Feel free to follow my progress on my website as I post updates to my application!
+Soon, feel free to follow my progress on my website towards my application!
 
-http://drewcornfield.com/
+http://drewcornfield.com/projects.php
 
 ![alt text](https://i.imgur.com/kQWbr6B.png)
 
@@ -26,3 +26,12 @@ These will be added at a later stage so its not required to link
 Thanks for checking it out :)
 
 
+Code is built using the combination of resources (And my own):
+
+https://learnopengl.com/
+
+http://www.opengl-tutorial.org/
+
+https://github.com/TheCherno/Sparky
+
+https://github.com/fegennari/3DWorld

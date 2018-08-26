@@ -2,7 +2,7 @@
 #include "buffers/IndexBuffer.h"
 #include "buffers/VertexArray.h"
 #include "Texture.h"
-#include "Shader.h"
+#include "shaders/Shader.h"
 
 class StaticSprite
 {

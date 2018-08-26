@@ -51,12 +51,18 @@ int main()
 	Model* sphere = new Model("objects/Sphere.obj", m_SphereMaterial);
 	m_Sphere->AddComponent(new MeshComponent(sphere->GetMesh()));
 	m_Sphere->AddComponent(new TransformComponent(glm::mat4(1)));
-	
+
+	/*Entity* sponza = new Entity();
+	Model* sponzamodel = new Model("objects/sponza/sponza.obj", m_SphereMaterial);
+	sponza->AddComponent(new MeshComponent(sponzamodel->GetMesh()));
+	sponza->AddComponent((new TransformComponent(glm::mat4(1))));
+	*/
 	
 	scene1->Add(m_Cube);
 	scene1->Add(m_HousePlant);
 	scene1->Add(m_Quad);
 	scene1->Add(m_Sphere);
+	//scene1->Add(sponza);
 
 
 	Texture crateTexture("textures/crate.bmp");

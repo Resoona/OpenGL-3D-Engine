@@ -1,6 +1,6 @@
 #include "ShaderUniform.h"
 
-#include "../Shader.h"
+#include "Shader.h"
 
 
 	ShaderUniformDeclaration::ShaderUniformDeclaration(Type type, const String& name, const Shader* shader, uint count)

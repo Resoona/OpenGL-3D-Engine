@@ -6,6 +6,7 @@ Material::Material(Shader* shader)
 	:m_Shader(shader)
 {
 	InitUniformStorage();
+	m_Resources = &m_Shader->GetResources();
 }
 
 Material::~Material()
@@ -34,6 +35,16 @@ const ShaderUniformDeclaration* Material::GetUniformDeclaration(const String& na
 	return nullptr;
 }
 
+ShaderResourceDeclaration* Material::FindResourceDeclaration(const String& name)
+{
+	for (ShaderResourceDeclaration* resource : *m_Resources)
+	{
+		if (resource->GetName() == name)
+			return resource;
+	}
+	return nullptr;
+}
+
 void Material::DumpUniformData() const
 {
 	std::cout << "Dumping uniforms for Material " << (long)this << std::endl;
@@ -50,6 +61,16 @@ void Material::DumpUniformData() const
 	}
 }
 
+void Material::SetTexture(const String& name, Texture* texture)
+{
+	ShaderResourceDeclaration* declaration = FindResourceDeclaration(name);
+	assert(declaration);
+	uint slot = declaration->GetRegister();
+	if (m_Textures.size() <= slot)
+		m_Textures.resize(slot + 1);
+	m_Textures[slot] = texture;
+}
+
 void Material::Bind() const
 {
 	m_Shader->Bind();
@@ -62,9 +83,11 @@ void Material::UnBind() const
 }
 
 MaterialInstance::MaterialInstance(Material* material)
-	: m_Material(material), m_SetUniforms(0), m_Texture(0)
+	: m_Material(material), m_SetUniforms(0)
 {
 	InitUniformStorage();
+
+	m_Resources = &m_Material->GetShader()->GetResources();
 }
 
 void MaterialInstance::InitUniformStorage()
@@ -89,6 +112,16 @@ int MaterialInstance::GetUniformDeclarationIndex(const String& name) const
 	return -1;
 }
 
+ShaderResourceDeclaration* MaterialInstance::FindResourceDeclaration(const String& name)
+{
+	for (ShaderResourceDeclaration* resource : *m_Resources)
+	{
+		if (resource->GetName() == name)
+			return resource;
+	}
+	return nullptr;
+}
+
 void MaterialInstance::UnsetUniform(const String& name)
 {
 	int index = GetUniformDeclarationIndex(name);
@@ -96,13 +129,22 @@ void MaterialInstance::UnsetUniform(const String& name)
 	m_SetUniforms &= mask;
 }
 
+void MaterialInstance::SetTexture(const String& name, Texture* texture)
+{
+	ShaderResourceDeclaration* declaration = FindResourceDeclaration(name);
+	uint slot = declaration->GetRegister();
+	if (m_Textures.size() <= slot)
+	{
+		m_Textures.resize(slot + 1);
+	}
+	m_Textures[slot] = texture;
+}
+
 void MaterialInstance::Bind() const
 {
 	// TODO: Textures. This needs to be resolved by the renderer.
 
 	m_Material->Bind();
-	if (m_Texture != nullptr)
-	m_Texture->Bind();
 
 	uint overrides = m_SetUniforms;
 	uint index = 0;

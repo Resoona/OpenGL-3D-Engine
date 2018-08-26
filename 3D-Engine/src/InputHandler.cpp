@@ -10,7 +10,7 @@ InputHandler::InputHandler(Window* window, Camera* camera)
 
 void InputHandler::Listen()
 {
-	const auto currentFrame = glfwGetTime();
+	const float currentFrame = (float)glfwGetTime();
 	const float deltaTime = currentFrame - m_LastFrame;
 	m_LastFrame = currentFrame;
 	float cameraSpeed = 2.5f * deltaTime;
@@ -77,8 +77,8 @@ void InputHandler::Listen()
 	}
 	
 
-	float xoffset = m_MouseX - m_LastMouseX;
-	float yoffset = m_LastMouseY - m_MouseY;
+	float xoffset = (float)(m_MouseX - m_LastMouseX);
+	float yoffset = (float)(m_LastMouseY - m_MouseY);
 	m_LastMouseX = m_MouseX;
 	m_LastMouseY = m_MouseY;
 	m_Window->GetMousePosition(m_MouseX, m_MouseY);
