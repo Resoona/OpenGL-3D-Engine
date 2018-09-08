@@ -31,7 +31,12 @@ private:
 	String m_VertexSource, m_FragmentSource;
 	uint m_ShaderID;
 
+	ShaderUniformBufferList m_VSUniformBuffers;
+	ShaderUniformBufferList m_PSUniformBuffers;
+	GLShaderUniformBufferDeclaration* m_VSUserUniformBuffer;
+	GLShaderUniformBufferDeclaration* m_PSUserUniformBuffer;
 	ShaderResourceList m_Resources;
+	ShaderStructList m_Structs;
 
 	std::vector<ShaderUniformDeclaration*> m_Uniforms;
 public:
@@ -60,14 +65,15 @@ private:
 	void PreProcess(const String& source, String** shaders);
 	void Parse(const String& vertexSource, const String& fragmentSource);
 	void ParseUniforms(const std::vector<String>& lines);
-	ShaderUniformDeclaration::Type GetUniformTypeFromString(const String& token);
+	
 	void ResolveUniforms();
 	void ValidateUniforms();
 	bool IsSystemUniform(ShaderUniformDeclaration* uniform) const;
+
 	GLint GetUniformLocation(const String& name);
 
+	ShaderUniformDeclaration::Type GetUniformTypeFromString(const String& token);
 	ShaderUniformDeclaration* FindUniformDeclaration(const String& name);
-
 
 	void SetUniform1f(const String& name, float value);
 	void SetUniform1fv(const String& name, float* value, int count);
@@ -90,5 +96,5 @@ private:
 
 public:
 	static Shader* FromFile(const String& name, const String& filepath);
-	//static Shader* FromSource(const String& name, const String& source);
+	static Shader* FromSource(const String& name, const String& source);
 };

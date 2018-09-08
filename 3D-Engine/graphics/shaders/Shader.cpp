@@ -54,6 +54,11 @@ void Shader::PreProcess(const String& source, String** shaders)
 	ParseUniforms(lines);
 }
 
+void Shader::Parse(const String& vertexSource, const String& fragmentSource)
+{
+	
+}
+
 
 void Shader::ParseUniforms(const std::vector<String>& lines)
 {

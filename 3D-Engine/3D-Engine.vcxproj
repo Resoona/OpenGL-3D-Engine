@@ -150,6 +150,7 @@
     <ClCompile Include="renderer\ForwardRenderer.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
+    <ClCompile Include="utils\String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entity\component\Component.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\InputHandler.h" />
     <ClInclude Include="typedeclaration.h" />
     <ClInclude Include="utils\FileUtils.h" />
+    <ClInclude Include="utils\String.h" />
     <ClInclude Include="utils\StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
