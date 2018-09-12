@@ -1,5 +1,6 @@
 #pragma once
 #include <gl/glew.h>
+#include "../utils/Eng.h"
 
 class Texture
 {
@@ -11,8 +12,8 @@ private:
 public:
 	Texture(const char* imageloc);
 	~Texture();
-	void Bind();
-	void Unbind();
+	void Bind(uint slot = 0);
+	void Unbind(uint slot = 0);
 
 	inline GLuint getID() const { return m_Texture; }
 

@@ -10,11 +10,11 @@ int main()
 	m_Renderer = new ForwardRenderer();
 	Scene* scene1 = new Scene();
 	
-	
-	Material* material1 = new Material(Shader::FromFile("Scene", "shaders/scene.shader"));
-	Material* material2 = new Material(Shader::FromFile("Default", "shaders/default.shader"));
-	Material* material3 = new Material(Shader::FromFile("Color", "shaders/Color.shader"));
-	Material* material4 = new Material(Shader::FromFile("Textured", "shaders/TexturedCube.shader"));
+
+	Material* material1 = new Material(Shader::CreateFromFile("scene", "shaders/scene.shader"));
+	Material* material2 = new Material(Shader::CreateFromFile("Default", "shaders/default.shader"));
+	//Material* material3 = new Material(Shader::FromFile("Color", "shaders/Color.shader"));
+	//Material* material4 = new Material(Shader::FromFile("Textured", "shaders/TexturedCube.shader"));
 	
 	VertexArray* va = CreateQuad(0, 0, 20, 20);
 	IndexBuffer* ib = new IndexBuffer(new uint[6]{ 0,1,2,2,3,0 }, 6);
@@ -86,6 +86,7 @@ int main()
 		inputHandler.Listen();
 		m_Renderer->Present();
 		window->Update();
+		
 	}
 
 	return 0;

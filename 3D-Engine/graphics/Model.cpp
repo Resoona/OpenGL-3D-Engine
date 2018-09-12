@@ -31,7 +31,7 @@ struct std::hash<Model::IndexSet>
 
 		void Model::Load(const String& path)
 		{
-			std::vector<String> lines = SplitString(ReadFile(path), '\n');
+			std::vector<String> lines = SplitString(utils::ReadFile(path), '\n');
 			VertexSet inputVertices;
 			std::vector<Vertex> vertices;
 			std::vector<uint> indices;

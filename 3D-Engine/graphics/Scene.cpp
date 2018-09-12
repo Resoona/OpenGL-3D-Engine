@@ -38,7 +38,7 @@ void Scene::Render(Renderer3D& renderer)
 	camera->Update();
 
 	renderer.Begin();
-
+	renderer.BeginScene(camera);
 	for (entity::Entity* entity : m_Entities)
 	{
 		entity::component::MeshComponent* mesh = entity->GetComponent<entity::component::MeshComponent>();
@@ -53,4 +53,5 @@ void Scene::Render(Renderer3D& renderer)
 	}
 
 	renderer.End();
+	renderer.EndScene();
 }

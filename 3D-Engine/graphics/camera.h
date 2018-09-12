@@ -28,7 +28,7 @@
 		Camera(int projWidth, int projHeight, float fov, float x, float y, float z, float pitch, float yaw);
 		~Camera();
 
-		inline glm::vec3 GetPos() { return m_pos; }
+		inline glm::vec3 GetPosition() { return m_pos; }
 		inline glm::vec3 GetFront() { return m_front; }
 		inline glm::vec3 GetUp() { return m_up; }
 		inline glm::mat4 GetVP() { return m_VP; }

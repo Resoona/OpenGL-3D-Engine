@@ -10,5 +10,7 @@
 	struct RenderCommand
 	{
 		Mesh* mesh;
+		glm::mat4 transform;
+		Shader* shader;
 		std::vector<RendererUniform> uniforms;
 	};

@@ -1,15 +1,11 @@
 #pragma once
 
-#include "sp/sp.h"
-#include "sp/Common.h"
+#include "Eng.h"
 
-typedef std::string String;
-
-namespace sp {
 
 #define STRINGFORMAT_BUFFER_SIZE 10 * 1024
 
-	class SP_API StringFormat
+	class StringFormat
 	{
 	private:
 		static char* s_Buffer;
@@ -63,4 +59,3 @@ namespace sp {
 	bool StartsWith(const String& string, const String& start);
 	int32 NextInt(const String& string);
 
-}

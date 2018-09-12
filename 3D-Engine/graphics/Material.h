@@ -10,31 +10,46 @@ class Material
 
 private:
 	friend class MaterialInstance;
-
-	Shader * m_Shader;
-	GLbyte* m_UniformData;
-	GLuint m_UniformDataSize;
-
 protected:
+
+	Shader* m_Shader;
+
+	byte* m_VSUserUniformBuffer;
+	uint m_VSUserUniformBufferSize;
+
+	byte* m_PSUserUniformBuffer;
+	uint m_PSUserUniformBufferSize;
+
 	std::vector<Texture*> m_Textures;
+
+	const ShaderUniformList* m_VSUserUniforms;
+	const ShaderUniformList* m_PSUserUniforms;
 	const ShaderResourceList* m_Resources;
+
 
 public:
 	Material(Shader* shader);
 	~Material();
 
-	void Bind() const;
-	void UnBind() const;
+	void Bind();
+	void Unbind();
+	void SetUniformData(const String& uniform, byte* data);
 	void DumpUniformData() const;
 	void SetTexture(const String& name, Texture* texture);
 
 	inline Shader* GetShader() const { return m_Shader; }
 
 	template<typename T>
-	inline void SetUniform(const String& name, const T& value)
+	inline void SetUniform(const String& name, const T& data)
 	{
-		//m_UniformData = value;
-		m_Shader->SetUniformMat4(name, value);
+		byte* buffer;
+		ShaderUniformDeclaration* declaration = FindUniformDeclaration(name, &buffer);
+		if (!declaration)
+		{
+			std::count << "Could not find uniform with name '" << name << "'!" << std::endl;
+			return;
+		}
+		memcpy(buffer + declaration->GetOffset(), &data, declaration->GetSize());
 		
 	}
 
@@ -51,8 +66,8 @@ public:
 	}
 
 protected:
-	void InitUniformStorage();
-	const ShaderUniformDeclaration* GetUniformDeclaration(const String& name) const;
+	void AllocateStorage();
+	ShaderUniformDeclaration* FindUniformDeclaration(const String& name, byte** outBuffer = nullptr);
 	ShaderResourceDeclaration* FindResourceDeclaration(const String& name);
 };
 
@@ -60,40 +75,47 @@ class MaterialInstance
 {
 private:
 	Material * m_Material;
-	byte* m_UniformData;
-	uint m_UniformDataSize;
-	uint m_SetUniforms;
+	byte* m_VSUserUniformBuffer;
+	uint m_VSUserUniformBufferSize;
 
+	byte* m_PSUserUniformBuffer;
+	uint m_PSUserUniformBufferSize;
 
 	std::vector<Texture*> m_Textures;
 
+	const ShaderUniformList* m_VSUserUniforms;
+	const ShaderUniformList* m_PSUserUniforms;
 	const ShaderResourceList* m_Resources;
+
+
 public:
 	MaterialInstance(Material* material);
 
 	inline Material* GetMaterial() const { return m_Material; }
 
-	void Bind() const;
-	void Unbind() const;
-	void UnsetUniform(const String& name);
+	void Bind();
+	void Unbind();
+	void SetUniformData(const String& uniform, byte* data);
 	void SetTexture(const String& name, Texture* texture);
 
 	template<typename T>
-	void SetUniform(const String& name, const T& value)
+	void SetUniform(const String& name, const T& data)
 	{
-		int index = GetUniformDeclarationIndex(name);
-		if (index == -1)
-		{
-			std::cout << "Could not find uniform " << name << std::endl;
-			return;
-		}
-		ShaderUniformDeclaration* uniform = m_Material->m_Shader->GetUniformDeclarations()[index];
-		memcpy(m_UniformData + uniform->GetOffset(), &value, uniform->GetSize());
+		byte* buffer;
+		ShaderUniformDeclaration* declaration = FindUniformDeclaration(name, &buffer);
+		assert(declaration);
+		memcpy(buffer + declaration->GetOffset(), &data, declaration->GetSize());
 
-		m_SetUniforms |= 1 << index;
+	}
+
+	template<typename T>
+	const T* GetUniform(const String& name) const
+	{
+		return GetUniform<T>(GetUniformDeclaration(name));
 	}
 private:
-	void InitUniformStorage();
+	void AllocateStorage();
 	int GetUniformDeclarationIndex(const String& name) const;
+	ShaderUniformDeclaration* FindUniformDeclaration(const String& name, byte** outBuffer = nullptr);
 	ShaderResourceDeclaration* FindResourceDeclaration(const String& name);
 };

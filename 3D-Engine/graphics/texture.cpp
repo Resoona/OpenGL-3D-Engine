@@ -20,13 +20,15 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_Texture);
 }
 
-void Texture::Bind()
+void Texture::Bind(uint slot)
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 }
 
-void Texture::Unbind()
+void Texture::Unbind(uint slot)
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

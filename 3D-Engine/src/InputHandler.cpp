@@ -17,7 +17,7 @@ void InputHandler::Listen()
 
 	glm::vec3 currentFront = m_Camera->GetFront();
 	glm::vec3 currentUp = m_Camera->GetUp();
-	glm::vec3 cameraPos = m_Camera->GetPos();
+	glm::vec3 cameraPos = m_Camera->GetPosition();
 	
 
 	bool LShiftpressed = m_Window->IsKeyPressed(GLFW_KEY_LEFT_SHIFT);
